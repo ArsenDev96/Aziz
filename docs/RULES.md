@@ -12,7 +12,7 @@ nowhere else.
 | PASS | +1 point |
 | FAIL | 0 points |
 | Winner | Highest score |
-| Tie at the top | Sudden death |
+| Tie at the top | One sudden-death round, 2 second timer |
 
 ## How a game runs
 
@@ -20,23 +20,20 @@ nowhere else.
    gets exactly 5 questions and nobody can be skipped.
 2. Questions are dealt from a **shuffled deck with no repeats** inside a session.
 3. Each turn: `READY` → question + 3 second countdown → the group taps `PASS` or `FAIL`.
-4. Ties at the top go to sudden death: one question each, only for the tied players.
+4. Highest score wins. If several players are level at the top, sudden death decides it.
 
-## Open decision for the product owner
+## Sudden death
 
-**Sudden death has to be able to end.** These questions are easy enough that a tied group can
-pass round after round forever, so the app currently does this:
+Sudden death runs **only** when two or more players are tied for the highest score at the end of
+normal play, and it lasts **exactly one round**. A tie anywhere else in the table is ignored.
 
-- every sudden-death round after the first is **one second faster** (3s → 2s → 1s floor);
-- after **5 sudden-death rounds** the players still level **share the win**.
+- Only the tied leaders play. Everyone else is done.
+- Each tied leader gets **one question**, on a **2 second** clock.
+- **One passes** → that player wins.
+- **Several pass** → those players are joint winners.
+- **Nobody passes** → all the tied leaders are joint winners.
 
-This is an engineering default to stop the game hanging, not a product decision. Tell me which
-you want instead and it is a one-line change:
-
-- keep it as is;
-- no cap, and accept that the group keeps playing until someone slips;
-- first FAIL loses instead (last player standing);
-- a harder question pool for sudden death (needs Phase 9 content first).
+There is never a second sudden-death round, so the game always ends after this one.
 
 ## Things deliberately NOT in V1
 

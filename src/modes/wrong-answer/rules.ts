@@ -9,21 +9,14 @@ export const WRONG_ANSWER_RULES = {
   timerSeconds: 3,
   passPoints: 1,
   failPoints: 0,
-  /**
-   * Sudden death has to end. These questions are easy enough that a whole tied group
-   * can pass round after round, so each round is one second faster than the last and
-   * after `maxSuddenDeathRounds` the players still level share the win.
-   * NEEDS PRODUCT OWNER SIGN-OFF — see docs/RULES.md.
-   */
-  maxSuddenDeathRounds: 5,
-  minSuddenDeathTimerSeconds: 1,
+  /** The single tie-break round is played on a faster clock. */
+  suddenDeathTimerSeconds: 2,
 } as const;
 
 export type WrongAnswerRules = typeof WRONG_ANSWER_RULES;
 
-/** 3s for normal play and the first tie-break, then 2s, then 1s. */
+/** 3 seconds during normal play, 2 seconds in the one sudden-death round. */
 export const timerSecondsForRound = (suddenDeathRound: number): number =>
-  Math.max(
-    WRONG_ANSWER_RULES.minSuddenDeathTimerSeconds,
-    WRONG_ANSWER_RULES.timerSeconds - Math.max(0, suddenDeathRound - 1),
-  );
+  suddenDeathRound > 0
+    ? WRONG_ANSWER_RULES.suddenDeathTimerSeconds
+    : WRONG_ANSWER_RULES.timerSeconds;

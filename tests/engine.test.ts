@@ -4,6 +4,7 @@ import { createSeededRng } from '../src/lib/random';
 import {
   createGame,
   currentPlayer,
+  currentTimerSeconds,
   currentTurn,
   judgeTurn,
   standings,
@@ -100,27 +101,23 @@ describe('scoring', () => {
     );
   });
 
-  it('shares the win when nobody can be separated', () => {
-    let state = newGame();
-    while (state.phase !== 'results') {
-      state = playTurn(state, 'pass');
-    }
-    assert.equal(state.suddenDeathRound, WRONG_ANSWER_RULES.maxSuddenDeathRounds);
-    assert.equal(state.winnerIds.length, players.length);
-  });
-
-  it('speeds the clock up on every sudden-death round', () => {
+  it('uses a two second clock in sudden death and three otherwise', () => {
     assert.equal(timerSecondsForRound(0), WRONG_ANSWER_RULES.timerSeconds);
-    assert.equal(timerSecondsForRound(1), WRONG_ANSWER_RULES.timerSeconds);
-    assert.equal(timerSecondsForRound(2), WRONG_ANSWER_RULES.timerSeconds - 1);
-    assert.equal(
-      timerSecondsForRound(99),
-      WRONG_ANSWER_RULES.minSuddenDeathTimerSeconds,
-    );
+    assert.equal(timerSecondsForRound(1), WRONG_ANSWER_RULES.suddenDeathTimerSeconds);
   });
 });
 
 describe('finishing the game', () => {
+  /** Plays normal play so that the first `tiedCount` players finish level at the top. */
+  const playToSuddenDeath = (tiedCount: number) => {
+    let state = newGame();
+    const tied = state.players.slice(0, tiedCount).map((player) => player.id);
+    while (state.suddenDeathRound === 0 && state.phase !== 'results') {
+      state = playTurn(state, tied.includes(currentTurn(state)!.playerId) ? 'pass' : 'fail');
+    }
+    return { state, tied };
+  };
+
   it('ends with a single winner when one player leads', () => {
     let state = newGame();
     const target = state.players[0].id;
@@ -129,56 +126,78 @@ describe('finishing the game', () => {
       state = playTurn(state, turn.playerId === target ? 'pass' : 'fail');
     }
     assert.deepEqual(state.winnerIds, [target]);
+    assert.equal(state.suddenDeathRound, 0);
     assert.equal(state.scores[target], WRONG_ANSWER_RULES.questionsPerPlayer);
     assert.equal(standings(state)[0].player.id, target);
   });
 
-  it('goes to sudden death when the top score is tied', () => {
-    let state = newGame();
-    const [a, b] = state.players.map((player) => player.id);
-    while (state.phase !== 'results' && state.suddenDeathRound === 0) {
-      const turn = currentTurn(state)!;
-      state = playTurn(state, turn.playerId === a || turn.playerId === b ? 'pass' : 'fail');
-    }
-    assert.equal(state.suddenDeathRound, 1);
-    assert.deepEqual(state.tieBreakPlayerIds.slice().sort(), [a, b].sort());
-    // Only the tied players get a sudden-death question.
-    const suddenDeathTurns = state.turns.filter((turn) => turn.suddenDeathRound === 1);
-    assert.equal(suddenDeathTurns.length, 2);
+  it('skips sudden death when the tie is not for first place', () => {
+    const { state } = playToSuddenDeath(1);
+    assert.equal(state.phase, 'results');
+    assert.equal(state.suddenDeathRound, 0);
+    assert.equal(state.winnerIds.length, 1);
   });
 
-  it('repeats sudden death until someone breaks the tie', () => {
-    let state = newGame();
-    const [a, b] = state.players.map((player) => player.id);
-    const tiedTwo = (playerId: string) => playerId === a || playerId === b;
-
-    while (state.suddenDeathRound === 0) {
-      state = playTurn(state, tiedTwo(currentTurn(state)!.playerId) ? 'pass' : 'fail');
-    }
-    // Both fail the first sudden-death round: still tied, so a second round is queued.
-    state = playTurn(state, 'fail');
-    state = playTurn(state, 'fail');
-    assert.equal(state.suddenDeathRound, 2);
+  it('gives the tied leaders one question each on a two second clock', () => {
+    const { state, tied } = playToSuddenDeath(2);
+    assert.equal(state.suddenDeathRound, 1);
     assert.equal(state.phase, 'turn');
+    assert.deepEqual(state.tieBreakPlayerIds, tied);
 
-    // Second round: the first of them passes, the other fails.
-    const decider = currentTurn(state)!.playerId;
+    const suddenDeathTurns = state.turns.filter((turn) => turn.suddenDeathRound > 0);
+    assert.equal(suddenDeathTurns.length, tied.length);
+    assert.deepEqual(
+      suddenDeathTurns.map((turn) => turn.playerId),
+      tied,
+    );
+    assert.equal(currentTimerSeconds(state), WRONG_ANSWER_RULES.suddenDeathTimerSeconds);
+  });
+
+  it('crowns the one player who passes sudden death', () => {
+    let { state, tied } = playToSuddenDeath(2);
     state = playTurn(state, 'pass');
     state = playTurn(state, 'fail');
     assert.equal(state.phase, 'results');
-    assert.deepEqual(state.winnerIds, [decider]);
+    assert.deepEqual(state.winnerIds, [tied[0]]);
   });
 
-  it('keeps dealing questions when sudden death outlasts the deck', () => {
-    let state = createGame(players, ['wa-001', 'wa-002'], createSeededRng(3));
-    let guard = 0;
-    while (state.phase !== 'results' && guard < 500) {
+  it('declares joint winners when several pass sudden death', () => {
+    let { state, tied } = playToSuddenDeath(3);
+    state = playTurn(state, 'pass');
+    state = playTurn(state, 'pass');
+    state = playTurn(state, 'fail');
+    assert.equal(state.phase, 'results');
+    assert.deepEqual(state.winnerIds, [tied[0], tied[1]]);
+  });
+
+  it('declares every tied player a joint winner when nobody passes', () => {
+    let { state, tied } = playToSuddenDeath(3);
+    for (let i = 0; i < tied.length; i += 1) {
       state = playTurn(state, 'fail');
-      guard += 1;
-      if (state.suddenDeathRound >= 3) break;
+    }
+    assert.equal(state.phase, 'results');
+    assert.deepEqual(state.winnerIds, tied);
+  });
+
+  it('never starts a second sudden-death round', () => {
+    let { state, tied } = playToSuddenDeath(2);
+    // Both pass, so they are still level — the game still ends here.
+    state = playTurn(state, 'pass');
+    state = playTurn(state, 'pass');
+    assert.equal(state.phase, 'results');
+    assert.equal(state.suddenDeathRound, 1);
+    assert.deepEqual(state.winnerIds, tied);
+    assert.ok(state.turns.every((turn) => turn.suddenDeathRound <= 1));
+  });
+
+  it('keeps dealing questions when the deck is smaller than the game', () => {
+    let state = createGame(players, ['wa-001', 'wa-002'], createSeededRng(3));
+    while (state.phase !== 'results') {
+      state = playTurn(state, 'fail');
     }
     assert.ok(state.turns.every((turn) => typeof turn.questionId === 'string'));
-    assert.ok(state.suddenDeathRound >= 1);
+    assert.equal(state.suddenDeathRound, 1);
+    assert.equal(state.winnerIds.length, players.length);
   });
 });
 

@@ -25,10 +25,12 @@ export interface GameState {
   turnIndex: number;
   scores: Record<string, number>;
   phase: GamePhase;
-  /** 0 while the normal 5-question rounds are running. */
+  /** 0 during normal play, 1 during the single sudden-death round. */
   suddenDeathRound: number;
-  /** Players still fighting for first place during sudden death. */
+  /** The players who were tied for first place when normal play ended. */
   tieBreakPlayerIds: string[];
+  /** Tied leaders who passed their sudden-death question. */
+  suddenDeathPassIds: string[];
   winnerIds: string[];
 }
 
@@ -86,6 +88,7 @@ export const createGame = (
     phase: 'turn',
     suddenDeathRound: 0,
     tieBreakPlayerIds: [],
+    suddenDeathPassIds: [],
     winnerIds: [],
   };
 };
@@ -121,7 +124,16 @@ export const judgeTurn = (state: GameState, verdict: Verdict): GameState => {
   const points =
     verdict === 'pass' ? WRONG_ANSWER_RULES.passPoints : WRONG_ANSWER_RULES.failPoints;
   const scores = { ...state.scores, [turn.playerId]: state.scores[turn.playerId] + points };
-  const advanced: GameState = { ...state, scores, turnIndex: state.turnIndex + 1 };
+  const suddenDeathPassIds =
+    turn.suddenDeathRound > 0 && verdict === 'pass'
+      ? [...state.suddenDeathPassIds, turn.playerId]
+      : state.suddenDeathPassIds;
+  const advanced: GameState = {
+    ...state,
+    scores,
+    suddenDeathPassIds,
+    turnIndex: state.turnIndex + 1,
+  };
 
   if (advanced.turnIndex < advanced.turns.length) {
     return { ...advanced, phase: 'turn' };
@@ -129,31 +141,35 @@ export const judgeTurn = (state: GameState, verdict: Verdict): GameState => {
   return resolveEnd(advanced);
 };
 
-/** All turns are used up: either we have a single winner or we queue a sudden-death round. */
+/**
+ * All turns are used up: declare the winner, queue the one sudden-death round, or
+ * read that round's result.
+ */
 const resolveEnd = (state: GameState): GameState => {
-  const pool =
-    state.suddenDeathRound === 0
-      ? state.players.map((player) => player.id)
-      : state.tieBreakPlayerIds;
+  if (state.suddenDeathRound > 0) {
+    // The single sudden-death round is over. Whoever passed wins it, jointly if
+    // several did; if nobody passed, the players who were tied share the win.
+    const winnerIds =
+      state.suddenDeathPassIds.length > 0 ? state.suddenDeathPassIds : state.tieBreakPlayerIds;
+    return { ...state, phase: 'results', winnerIds };
+  }
 
-  const best = Math.max(...pool.map((id) => state.scores[id]));
-  const leaders = pool.filter((id) => state.scores[id] === best);
+  const best = Math.max(...state.players.map((player) => state.scores[player.id]));
+  const leaders = state.players
+    .filter((player) => state.scores[player.id] === best)
+    .map((player) => player.id);
 
   if (leaders.length === 1) {
     return { ...state, phase: 'results', winnerIds: leaders };
   }
-  if (state.suddenDeathRound >= WRONG_ANSWER_RULES.maxSuddenDeathRounds) {
-    // Still level after the last tie-break: they share the win rather than play forever.
-    return { ...state, phase: 'results', winnerIds: leaders };
-  }
 
-  const suddenDeathRound = state.suddenDeathRound + 1;
+  // Exactly one tie-break round, one question each, tied leaders only.
   let deckIndex = state.deckIndex;
   const turns = [...state.turns];
-  for (const playerId of state.players.map((p) => p.id).filter((id) => leaders.includes(id))) {
+  for (const playerId of leaders) {
     const draw = drawQuestion(state.deck, deckIndex);
     deckIndex = draw.nextIndex;
-    turns.push({ playerId, questionId: draw.questionId, suddenDeathRound });
+    turns.push({ playerId, questionId: draw.questionId, suddenDeathRound: 1 });
   }
 
   return {
@@ -161,7 +177,7 @@ const resolveEnd = (state: GameState): GameState => {
     deckIndex,
     turns,
     phase: 'turn',
-    suddenDeathRound,
+    suddenDeathRound: 1,
     tieBreakPlayerIds: leaders,
   };
 };

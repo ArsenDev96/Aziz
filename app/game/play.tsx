@@ -8,7 +8,7 @@ import { useFeedback } from '@/lib/feedback';
 import { format } from '@/locales';
 import {
   currentPlayer,
-  currentTimerSeconds,
+  currentTimerMs,
   currentTurn,
   turnProgress,
 } from '@/modes/wrong-answer/engine';
@@ -83,7 +83,7 @@ export default function PlayScreen() {
         >
           <Text style={styles.hint}>{strings.question.hint}</Text>
           <Text style={styles.question}>{question.text}</Text>
-          <Countdown seconds={currentTimerSeconds(state)} onDone={endQuestion} />
+          <Countdown durationMs={currentTimerMs(state)} onDone={endQuestion} />
         </Animated.View>
       ) : null}
 

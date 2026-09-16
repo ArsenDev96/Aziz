@@ -13,14 +13,15 @@ import {
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
+import { TimerPicker } from '@/components/TimerPicker';
 import { format } from '@/locales';
 import { WRONG_ANSWER_RULES } from '@/modes/wrong-answer/rules';
 import { useGame } from '@/state/game';
-import { useStrings } from '@/state/settings';
+import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing } from '@/theme/theme';
 
 export default function PlayersScreen() {
-  const strings = useStrings();
+  const { settings, strings, setTimerSeconds } = useSettings();
   const { players, addPlayer, removePlayer, canStart } = useGame();
   const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -117,6 +118,11 @@ export default function PlayersScreen() {
           ))}
         </ScrollView>
 
+        <TimerPicker
+          value={settings.timerSeconds}
+          onChange={setTimerSeconds}
+          style={styles.timer}
+        />
         <AzizButton label={strings.players.start} onPress={start} disabled={!canStart} />
       </KeyboardAvoidingView>
     </Screen>
@@ -191,5 +197,8 @@ const styles = StyleSheet.create({
   removeLabel: {
     color: colors.textMuted,
     fontSize: font.body,
+  },
+  timer: {
+    marginBottom: spacing(2),
   },
 });

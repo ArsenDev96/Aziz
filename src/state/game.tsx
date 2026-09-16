@@ -86,8 +86,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const startGame = useCallback(() => {
     const questionIds = getWrongAnswerQuestions(settings.language).map((item) => item.id);
-    setState(createGame(players, questionIds));
-  }, [players, settings.language]);
+    setState(createGame(players, questionIds, undefined, settings.timerSeconds));
+  }, [players, settings.language, settings.timerSeconds]);
 
   const beginQuestion = useCallback(
     () => setState((current) => (current ? startQuestion(current) : current)),

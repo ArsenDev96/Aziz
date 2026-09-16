@@ -8,18 +8,18 @@ nowhere else.
 | --- | --- |
 | Players | 2–8 |
 | Questions per player | 5 |
-| Timer | 3 seconds |
+| Timer | 2.5, 3 or 3.5 seconds, picked before the game (default 3) |
 | PASS | +1 point |
 | FAIL | 0 points |
 | Winner | Highest score |
-| Tie at the top | One sudden-death round, 2 second timer |
+| Tie at the top | One sudden-death round, timer minus 0.5 seconds (never under 2) |
 
 ## How a game runs
 
 1. Turn order is **shuffled once at the start**, then it is strict round-robin, so everyone
    gets exactly 5 questions and nobody can be skipped.
 2. Questions are dealt from a **shuffled deck with no repeats** inside a session.
-3. Each turn: `READY` → question + 3 second countdown → the group taps `PASS` or `FAIL`.
+3. Each turn: `READY` → question + the chosen countdown → the group taps `PASS` or `FAIL`.
 4. Highest score wins. If several players are level at the top, sudden death decides it.
 
 ## Sudden death
@@ -28,7 +28,7 @@ Sudden death runs **only** when two or more players are tied for the highest sco
 normal play, and it lasts **exactly one round**. A tie anywhere else in the table is ignored.
 
 - Only the tied leaders play. Everyone else is done.
-- Each tied leader gets **one question**, on a **2 second** clock.
+- Each tied leader gets **one question**, on a clock **half a second shorter** than the chosen timer, never under **2 seconds** (2.5 → 2, 3 → 2.5, 3.5 → 3).
 - **One passes** → that player wins.
 - **Several pass** → those players are joint winners.
 - **Nobody passes** → all the tied leaders are joint winners.

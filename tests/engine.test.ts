@@ -14,7 +14,11 @@ import {
   type Player,
   type Verdict,
 } from '../src/modes/wrong-answer/engine';
-import { timerSecondsForRound, WRONG_ANSWER_RULES } from '../src/modes/wrong-answer/rules';
+import {
+  suddenDeathTimerSeconds,
+  timerSecondsForRound,
+  WRONG_ANSWER_RULES,
+} from '../src/modes/wrong-answer/rules';
 
 const players: Player[] = [
   { id: 'p1', name: 'Aram' },
@@ -101,9 +105,12 @@ describe('scoring', () => {
     );
   });
 
-  it('uses a two second clock in sudden death and three otherwise', () => {
-    assert.equal(timerSecondsForRound(0), WRONG_ANSWER_RULES.timerSeconds);
-    assert.equal(timerSecondsForRound(1), WRONG_ANSWER_RULES.suddenDeathTimerSeconds);
+  it('uses the default clock in normal play and a faster one in sudden death', () => {
+    assert.equal(timerSecondsForRound(0), WRONG_ANSWER_RULES.defaultTimerSeconds);
+    assert.equal(
+      timerSecondsForRound(1),
+      suddenDeathTimerSeconds(WRONG_ANSWER_RULES.defaultTimerSeconds),
+    );
   });
 });
 
@@ -138,7 +145,7 @@ describe('finishing the game', () => {
     assert.equal(state.winnerIds.length, 1);
   });
 
-  it('gives the tied leaders one question each on a two second clock', () => {
+  it('gives the tied leaders one question each on a faster clock', () => {
     const { state, tied } = playToSuddenDeath(2);
     assert.equal(state.suddenDeathRound, 1);
     assert.equal(state.phase, 'turn');
@@ -150,7 +157,7 @@ describe('finishing the game', () => {
       suddenDeathTurns.map((turn) => turn.playerId),
       tied,
     );
-    assert.equal(currentTimerSeconds(state), WRONG_ANSWER_RULES.suddenDeathTimerSeconds);
+    assert.equal(currentTimerSeconds(state), suddenDeathTimerSeconds(state.timerSeconds));
   });
 
   it('crowns the one player who passes sudden death', () => {

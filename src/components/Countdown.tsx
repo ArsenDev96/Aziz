@@ -7,48 +7,57 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useFeedback } from '@/lib/feedback';
+import { formatSeconds, msToSeconds, nextTickDelayMs } from '@/lib/time';
 import { colors, font } from '@/theme/theme';
 
 interface Props {
-  seconds: number;
+  /** Whole milliseconds, so a 2.5 second clock shows 2.5 → 1.5 → 0.5 → done. */
+  durationMs: number;
   /** Fires once, when the clock reaches zero. */
   onDone: () => void;
 }
 
 /** Mounted fresh for every turn, so the starting value never needs resetting. */
-export const Countdown = ({ seconds, onDone }: Props) => {
-  const [remaining, setRemaining] = useState(seconds);
+export const Countdown = ({ durationMs, onDone }: Props) => {
+  const [remainingMs, setRemainingMs] = useState(durationMs);
   const feedback = useFeedback();
   const scale = useSharedValue(1);
 
   useEffect(() => {
-    let value = seconds;
-    const id = setInterval(() => {
-      value -= 1;
-      setRemaining(Math.max(value, 0));
-      if (value <= 0) {
-        clearInterval(id);
-        onDone();
-      }
-    }, 1000);
-    return () => clearInterval(id);
-  }, [seconds, onDone]);
+    let remaining = durationMs;
+    let id: ReturnType<typeof setTimeout> | undefined;
+    // A timeout chain rather than an interval: the last step can be shorter than a second.
+    const tick = () => {
+      const delay = nextTickDelayMs(remaining);
+      id = setTimeout(() => {
+        remaining = Math.max(remaining - delay, 0);
+        setRemainingMs(remaining);
+        if (remaining <= 0) {
+          onDone();
+        } else {
+          tick();
+        }
+      }, delay);
+    };
+    tick();
+    return () => clearTimeout(id);
+  }, [durationMs, onDone]);
 
   useEffect(() => {
-    if (remaining <= 0) return;
+    if (remainingMs <= 0) return;
     feedback.tick();
     scale.value = withSequence(
       withTiming(1.18, { duration: 110 }),
       withTiming(1, { duration: 220 }),
     );
-  }, [remaining, feedback, scale]);
+  }, [remainingMs, feedback, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   return (
     <Animated.View style={animatedStyle}>
       <Text style={styles.digit} accessibilityLiveRegion="polite">
-        {Math.max(remaining, 0)}
+        {formatSeconds(msToSeconds(Math.max(remainingMs, 0)))}
       </Text>
     </Animated.View>
   );

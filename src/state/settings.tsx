@@ -9,17 +9,10 @@ import {
 } from 'react';
 import { getStrings, type Language, type Strings } from '@/locales';
 import { loadJson, saveJson, STORAGE_KEYS } from '@/lib/storage';
+import type { TimerSeconds } from '@/modes/wrong-answer/rules';
+import { DEFAULT_SETTINGS, hydrateSettings, type Settings } from '@/state/settings-model';
 
-export interface Settings {
-  language: Language;
-  haptics: boolean;
-}
-
-const DEFAULT_SETTINGS: Settings = {
-  // Armenian is the primary language of the app; English is the fallback for testing.
-  language: 'hy',
-  haptics: true,
-};
+export type { Settings };
 
 interface SettingsValue {
   settings: Settings;
@@ -28,6 +21,7 @@ interface SettingsValue {
   strings: Strings;
   setLanguage: (language: Language) => void;
   setHaptics: (enabled: boolean) => void;
+  setTimerSeconds: (timerSeconds: TimerSeconds) => void;
 }
 
 const SettingsContext = createContext<SettingsValue | null>(null);
@@ -38,9 +32,9 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let active = true;
-    loadJson<Settings>(STORAGE_KEYS.settings, DEFAULT_SETTINGS).then((stored) => {
+    loadJson<Partial<Settings>>(STORAGE_KEYS.settings, DEFAULT_SETTINGS).then((stored) => {
       if (!active) return;
-      setSettings({ ...DEFAULT_SETTINGS, ...stored });
+      setSettings(hydrateSettings(stored));
       setReady(true);
     });
     return () => {
@@ -63,6 +57,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
       strings: getStrings(settings.language),
       setLanguage: (language: Language) => update({ language }),
       setHaptics: (haptics: boolean) => update({ haptics }),
+      setTimerSeconds: (timerSeconds: TimerSeconds) => update({ timerSeconds }),
     }),
     [settings, ready, update],
   );

@@ -2,7 +2,7 @@
 
 Armenian party games for one phone and a table full of people. Offline, no account, no backend.
 
-**Status: Phase 4 — first playable prototype.** One game mode (Wrong Answer Only), 50 questions
+**Status: Phase 4 — first playable prototype.** One game mode (Wrong Answer Only), 200 questions
 in Armenian and English, deliberately unpolished. The next step is [a real
 playtest](docs/PLAYTEST.md), not more features.
 

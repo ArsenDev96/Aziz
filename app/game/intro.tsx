@@ -3,20 +3,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
+import { formatSeconds } from '@/lib/time';
 import { format } from '@/locales';
-import { WRONG_ANSWER_RULES } from '@/modes/wrong-answer/rules';
 import { useGame } from '@/state/game';
-import { useStrings } from '@/state/settings';
+import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing } from '@/theme/theme';
 
 export default function GameIntroScreen() {
-  const strings = useStrings();
+  const { settings, strings } = useSettings();
   const { startGame } = useGame();
   const mode = strings.modes.wrongAnswer;
 
   const rules = [
     mode.rule1,
-    format(mode.rule2, { seconds: WRONG_ANSWER_RULES.timerSeconds }),
+    format(mode.rule2, { seconds: formatSeconds(settings.timerSeconds) }),
     mode.rule3,
   ];
 

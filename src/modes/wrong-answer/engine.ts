@@ -1,5 +1,11 @@
 import { shuffle, type Rng } from '@/lib/random';
-import { timerSecondsForRound, WRONG_ANSWER_RULES } from './rules';
+import {
+  normalizeTimerSeconds,
+  timerMsForRound,
+  timerSecondsForRound,
+  WRONG_ANSWER_RULES,
+  type TimerSeconds,
+} from './rules';
 
 export interface Player {
   id: string;
@@ -32,6 +38,8 @@ export interface GameState {
   /** Tied leaders who passed their sudden-death question. */
   suddenDeathPassIds: string[];
   winnerIds: string[];
+  /** The clock the group picked before this game; sudden death derives from it. */
+  timerSeconds: TimerSeconds;
 }
 
 export interface Standing {
@@ -53,6 +61,7 @@ export const createGame = (
   players: Player[],
   questionIds: string[],
   rng?: Rng,
+  timerSeconds: TimerSeconds = WRONG_ANSWER_RULES.defaultTimerSeconds,
 ): GameState => {
   if (players.length < WRONG_ANSWER_RULES.minPlayers) {
     throw new Error(`Need at least ${WRONG_ANSWER_RULES.minPlayers} players`);
@@ -90,6 +99,7 @@ export const createGame = (
     tieBreakPlayerIds: [],
     suddenDeathPassIds: [],
     winnerIds: [],
+    timerSeconds: normalizeTimerSeconds(timerSeconds),
   };
 };
 
@@ -108,7 +118,11 @@ export const turnProgress = (state: GameState) => {
 
 /** Seconds on the clock for the turn being played. */
 export const currentTimerSeconds = (state: GameState): number =>
-  timerSecondsForRound(currentTurn(state)?.suddenDeathRound ?? 0);
+  timerSecondsForRound(currentTurn(state)?.suddenDeathRound ?? 0, state.timerSeconds);
+
+/** The same clock in whole milliseconds — what the countdown runs on. */
+export const currentTimerMs = (state: GameState): number =>
+  timerMsForRound(currentTurn(state)?.suddenDeathRound ?? 0, state.timerSeconds);
 
 export const startQuestion = (state: GameState): GameState =>
   state.phase === 'turn' ? { ...state, phase: 'question' } : state;

@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
-import { AraButton } from '@/components/AraButton';
+import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { format } from '@/locales';
 import { WRONG_ANSWER_RULES } from '@/modes/wrong-answer/rules';
@@ -78,7 +78,7 @@ export default function PlayersScreen() {
             autoCorrect={false}
             onSubmitEditing={submit}
           />
-          <AraButton
+          <AzizButton
             label={strings.players.add}
             variant="accent"
             onPress={submit}
@@ -117,7 +117,7 @@ export default function PlayersScreen() {
           ))}
         </ScrollView>
 
-        <AraButton label={strings.players.start} onPress={start} disabled={!canStart} />
+        <AzizButton label={strings.players.start} onPress={start} disabled={!canStart} />
       </KeyboardAvoidingView>
     </Screen>
   );

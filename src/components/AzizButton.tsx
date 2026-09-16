@@ -29,7 +29,7 @@ const foreground: Record<Variant, string> = {
   ghost: colors.textMuted,
 };
 
-export const AraButton = ({
+export const AzizButton = ({
   label,
   onPress,
   variant = 'primary',

@@ -1,7 +1,7 @@
 import { Redirect, router } from 'expo-router';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
-import { AraButton } from '@/components/AraButton';
+import { AzizButton } from '@/components/AzizButton';
 import { Countdown } from '@/components/Countdown';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
@@ -71,7 +71,7 @@ export default function PlayScreen() {
           {isSuddenDeath ? <Text style={styles.suddenDeath}>{strings.suddenDeath.subtitle}</Text> : null}
           <Text style={styles.playerName}>{player.name}</Text>
           <Text style={styles.turnHeading}>{format(strings.turn.heading, { name: player.name })}</Text>
-          <AraButton label={strings.turn.ready} onPress={beginQuestion} style={styles.readyButton} />
+          <AzizButton label={strings.turn.ready} onPress={beginQuestion} style={styles.readyButton} />
         </Animated.View>
       ) : null}
 
@@ -98,7 +98,7 @@ export default function PlayScreen() {
             {format(strings.judge.heading, { name: player.name })}
           </Text>
           <View style={styles.verdictRow}>
-            <AraButton
+            <AzizButton
               label={strings.judge.fail}
               variant="fail"
               size="huge"
@@ -107,7 +107,7 @@ export default function PlayScreen() {
                 judge('fail');
               }}
             />
-            <AraButton
+            <AzizButton
               label={strings.judge.pass}
               variant="pass"
               size="huge"

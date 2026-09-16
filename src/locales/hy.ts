@@ -2,7 +2,7 @@ import type { Strings } from './types';
 
 export const hy: Strings = {
   app: {
-    name: 'ARA!',
+    name: 'AZIZ',
     tagline: 'Խաղեր ամբողջ սեղանի համար',
   },
   home: {

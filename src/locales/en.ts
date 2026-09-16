@@ -1,6 +1,6 @@
 export const en = {
   app: {
-    name: 'ARA!',
+    name: 'AZIZ',
     tagline: 'Party games for the whole table',
   },
   home: {

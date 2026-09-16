@@ -19,6 +19,6 @@ export const saveJson = async (key: string, value: unknown): Promise<void> => {
 };
 
 export const STORAGE_KEYS = {
-  settings: 'ara.settings.v1',
-  players: 'ara.players.v1',
+  settings: 'aziz.settings.v1',
+  players: 'aziz.players.v1',
 } as const;

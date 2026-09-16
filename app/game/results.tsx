@@ -1,7 +1,7 @@
 import { Redirect, router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { AraButton } from '@/components/AraButton';
+import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { format } from '@/locales';
 import { standings } from '@/modes/wrong-answer/engine';
@@ -50,14 +50,14 @@ export default function ResultsScreen() {
       </ScrollView>
 
       <View style={styles.actions}>
-        <AraButton
+        <AzizButton
           label={strings.results.playAgain}
           onPress={() => {
             startGame();
             router.replace('/game/play');
           }}
         />
-        <AraButton
+        <AzizButton
           label={strings.results.home}
           variant="ghost"
           onPress={() => {

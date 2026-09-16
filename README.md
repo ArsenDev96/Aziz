@@ -1,4 +1,4 @@
-# ARA!
+# AZIZ
 
 Armenian party games for one phone and a table full of people. Offline, no account, no backend.
 
@@ -41,7 +41,7 @@ onto the stack fifteen times a game.
 ```text
 app/                       screens (expo-router)
 src/
-  components/              Screen, AraButton, Countdown
+  components/              Screen, AzizButton, Countdown
   content/wrong-answer/    questions — en.ts and hy.ts, paired by id
   locales/                 en.ts, hy.ts — every UI string
   modes/wrong-answer/      rules.ts (the numbers) + engine.ts (pure game logic)
@@ -62,7 +62,7 @@ never drifts from its original.
 
 ## Before Google Play
 
-- `am.ara.party` in [`app.json`](app.json) is a placeholder — the real package name can never be
+- `am.aziz.party` in [`app.json`](app.json) is a placeholder — the real package name can never be
   changed after the first upload, so decide it before the first release build.
 - Icons and the splash screen are still the Expo defaults (Phase 7).
 - No sound yet (Phase 10), so Settings has no sound switch to toggle.

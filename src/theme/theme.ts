@@ -1,6 +1,6 @@
 /**
  * Placeholder visual identity for the prototype.
- * The real ARA! identity gets designed in Phase 7 — only edit this file for it,
+ * The real AZIZ identity gets designed in Phase 7 — only edit this file for it,
  * screens should never hardcode colors or sizes.
  */
 export const colors = {

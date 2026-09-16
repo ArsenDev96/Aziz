@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { AraButton } from '@/components/AraButton';
+import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { useSettings } from '@/state/settings';
 import { colors, font, spacing } from '@/theme/theme';
@@ -18,7 +18,7 @@ export default function HomeScreen() {
       </Animated.View>
 
       <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.actions}>
-        <AraButton label={strings.home.play} onPress={() => router.push('/players')} />
+        <AzizButton label={strings.home.play} onPress={() => router.push('/players')} />
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/settings')}

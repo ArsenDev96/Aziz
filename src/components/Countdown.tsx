@@ -15,10 +15,12 @@ interface Props {
   durationMs: number;
   /** Fires once, when the clock reaches zero. */
   onDone: () => void;
+  /** Digit color; defaults to the accent used by the question clock. */
+  color?: string;
 }
 
 /** Mounted fresh for every turn, so the starting value never needs resetting. */
-export const Countdown = ({ durationMs, onDone }: Props) => {
+export const Countdown = ({ durationMs, onDone, color = colors.accent }: Props) => {
   const [remainingMs, setRemainingMs] = useState(durationMs);
   const feedback = useFeedback();
   const scale = useSharedValue(1);
@@ -56,7 +58,7 @@ export const Countdown = ({ durationMs, onDone }: Props) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <Text style={styles.digit} accessibilityLiveRegion="polite">
+      <Text style={[styles.digit, { color }]} accessibilityLiveRegion="polite">
         {formatSeconds(msToSeconds(Math.max(remainingMs, 0)))}
       </Text>
     </Animated.View>

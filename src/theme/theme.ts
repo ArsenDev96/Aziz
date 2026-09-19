@@ -18,6 +18,16 @@ export const colors = {
   onAccent: '#1A1206',
 } as const;
 
+/** One color per team slot for the team modes, with a readable foreground for each. */
+export const teamColors = [
+  { bg: '#FF4D6D', fg: '#FFFFFF' },
+  { bg: '#FFD166', fg: '#1A1206' },
+  { bg: '#2FD980', fg: '#052914' },
+  { bg: '#4DA3FF', fg: '#FFFFFF' },
+] as const;
+
+export const teamColor = (index: number) => teamColors[index % teamColors.length];
+
 export const spacing = (n: number) => n * 8;
 
 export const radius = {
@@ -37,4 +47,4 @@ export const font = {
   countdown: 140,
 } as const;
 
-export const theme = { colors, spacing, radius, font } as const;
+export const theme = { colors, teamColors, spacing, radius, font } as const;

@@ -2,8 +2,8 @@
 
 Armenian party games for one phone and a table full of people. Offline, no account, no backend.
 
-**Status: Phase 4 — first playable prototype.** One game mode (Wrong Answer Only), 200 questions
-in Armenian and English, deliberately unpolished. The next step is [a real
+**Status: Phase 4 — first playable prototype.** Two game modes — Wrong Answer Only (200 questions)
+and Same Answer (100 team prompts) — in Armenian and English, deliberately unpolished. The next step is [a real
 playtest](docs/PLAYTEST.md), not more features.
 
 ## Run it
@@ -32,6 +32,10 @@ npx expo-doctor      # project health
 | Turn → question + countdown → PASS/FAIL | [`app/game/play.tsx`](app/game/play.tsx) |
 | Results, play again | [`app/game/results.tsx`](app/game/results.tsx) |
 | Settings — language, vibration | [`app/settings.tsx`](app/settings.tsx) |
+| Same Answer: team setup (4–8 players, 2–4 teams) | [`app/same-answer/setup.tsx`](app/same-answer/setup.tsx) |
+| Same Answer: intro / rules | [`app/same-answer/intro.tsx`](app/same-answer/intro.tsx) |
+| Same Answer: team → think → 3-2-1 → SAY IT → match count → score | [`app/same-answer/play.tsx`](app/same-answer/play.tsx) |
+| Same Answer: standings, play again | [`app/same-answer/results.tsx`](app/same-answer/results.tsx) |
 
 The three in-game states live in one route on purpose: a route per turn would push a new screen
 onto the stack fifteen times a game.
@@ -43,9 +47,11 @@ app/                       screens (expo-router)
 src/
   components/              Screen, AzizButton, Countdown
   content/wrong-answer/    questions — en.ts and hy.ts, paired by id
+  content/same-answer/     prompts — en.ts and hy.ts, paired by id
   locales/                 en.ts, hy.ts — every UI string
   modes/wrong-answer/      rules.ts (the numbers) + engine.ts (pure game logic)
-  state/                   settings + game providers, AsyncStorage backed
+  modes/same-answer/       rules.ts + engine.ts for the team mode, same split
+  state/                   settings, game (roster + Wrong Answer) and same-answer providers
   theme/theme.ts           all colors and sizes
 tests/                     engine unit tests
 docs/                      RULES.md, PLAYTEST.md
@@ -58,7 +64,8 @@ the next state. That is what makes the rules testable and what a second game mod
 
 Armenian is the default; English is available in Settings. UI strings are in `src/locales`,
 questions in `src/content/wrong-answer`, and the two question files share ids so a translation
-never drifts from its original.
+never drifts from its original. Same Answer prompts follow the same pattern in
+`src/content/same-answer`.
 
 ## Before Google Play
 

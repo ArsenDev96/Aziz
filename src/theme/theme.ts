@@ -47,4 +47,13 @@ export const font = {
   countdown: 140,
 } as const;
 
-export const theme = { colors, teamColors, spacing, radius, font } as const;
+/**
+ * In-app use of assets/branding/splash-logo.png. The mark occupies a known window of the square
+ * canvas (fractions of the side, measured from the PNG); screens size the image from these.
+ */
+export const logo = {
+  homeWidth: 192,
+  artwork: { left: 0.161, top: 0.297, width: 0.679, height: 0.456 },
+} as const;
+
+export const theme = { colors, teamColors, spacing, radius, font, logo } as const;

@@ -1,4 +1,4 @@
-import type { Language } from '@/locales';
+import { LANGUAGES, type Language } from '@/locales';
 import { normalizeTimerSeconds, WRONG_ANSWER_RULES, type TimerSeconds } from '@/modes/wrong-answer/rules';
 
 /**
@@ -28,3 +28,10 @@ export const hydrateSettings = (stored: Partial<Settings> | null | undefined): S
   const merged = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
   return { ...merged, timerSeconds: normalizeTimerSeconds(merged.timerSeconds) };
 };
+
+/**
+ * True once the player has picked a language (a valid one is in storage). A fresh install has
+ * nothing stored, so the app asks first instead of silently defaulting.
+ */
+export const hasChosenLanguage = (stored: Partial<Settings> | null | undefined): boolean =>
+  stored?.language !== undefined && LANGUAGES.includes(stored.language);

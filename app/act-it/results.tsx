@@ -4,20 +4,20 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { format } from '@/locales';
-import { standings, teamPlayers } from '@/modes/same-answer/engine';
-import { useSameAnswer } from '@/state/same-answer';
+import { standings, teamPlayers } from '@/modes/act-it/engine';
+import { useActIt } from '@/state/act-it';
 import { useStrings } from '@/state/settings';
 import { colors, font, radius, spacing, teamColor } from '@/theme/theme';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
-export default function SameAnswerResultsScreen() {
+export default function ActItResultsScreen() {
   const strings = useStrings();
-  const { state, playAgain, quit } = useSameAnswer();
+  const { state, playAgain, quit } = useActIt();
 
   if (!state || state.phase !== 'results') return <Redirect href="/" />;
 
-  const copy = strings.sameAnswer;
+  const copy = strings.actIt;
   const table = standings(state);
   const winners = state.teams
     .filter((team) => state.winnerTeamIds.includes(team.id))
@@ -65,7 +65,7 @@ export default function SameAnswerResultsScreen() {
           label={strings.results.playAgain}
           onPress={() => {
             playAgain();
-            router.replace('/same-answer/play');
+            router.replace('/act-it/play');
           }}
         />
         <AzizButton
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   winner: {
-    color: colors.accent,
+    color: colors.pass,
     fontSize: font.title,
     fontWeight: '900',
     textAlign: 'center',

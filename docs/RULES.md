@@ -96,3 +96,57 @@ multipliers.
 - No timer settings for Same Answer.
 - No custom team names or avatars.
 - No speech recognition; the group counts matches by hand.
+
+---
+
+# Act It! (Ցույց տուր) — V1 rules
+
+These rules live in code in [`src/modes/act-it/rules.ts`](../src/modes/act-it/rules.ts) —
+change them there, nowhere else.
+
+| Rule | V1 value |
+| --- | --- |
+| Players | 4–8, in 2–4 teams of at least 2; uneven teams are fine (3 vs 2, 3 vs 3 vs 2 …) |
+| A turn | One teammate guesses, the rest of that team acts; the other teams sit it out |
+| Turns per team | The size of the largest team — every team gets the same number |
+| Turn length | 45 seconds, after a 3 → 2 → 1 → GO count-in |
+| CORRECT | +1 point to the active team, next card immediately |
+| SKIP | 0 points, next card immediately, at most 2 per turn |
+| Winner | Highest team score; a tie at the top means joint winners |
+
+## How a game runs
+
+1. Teams are made on the setup screen from the shared roster: pick 2, 3 or 4 teams and tap a
+   number next to each name. Team order is 1, 2, 3, 4 and the order inside a team is roster
+   order — **nothing is shuffled**, so the table can always tell whose turn is next.
+2. The whole schedule is built once at the start: **round → team → guesser**. Round 1 is every
+   team's first player in team order, round 2 every team's second, and so on. A team smaller
+   than the round count wraps back to its first player, so with Team 1 [Aram, Ani, Gor],
+   Team 2 [Mari, Narek, Davit], Team 3 [Lilit, Karen] the order is
+   Aram → Mari → Lilit → Ani → Narek → Karen → Gor → Davit → Lilit.
+3. Cards are dealt from a **shuffled deck with no repeats for the whole game** (200 cards per
+   language) — the deck is not reset between teams. If a game somehow used all 200, it wraps.
+4. Each turn: the pre-turn screen names the team, the guesser and the actor(s) → the guesser
+   holds the phone against their forehead, screen facing their team → `READY` → 3-2-1-GO → the
+   actors see one word at a time and tap `CORRECT` or `SKIP` → `TIME!` shows what the guesser got
+   this turn and the team's running total → `NEXT`.
+5. After the last scheduled turn the team standings appear.
+
+## Judging a guess
+
+The guess does **not** need the exact wording on the card; it counts when the actors agree the
+concept was clearly identified (physician for DOCTOR, automobile for CAR). Actors may move,
+mime and act together but may not speak, mouth the word, spell, or show anything written. The
+group judges this; the app does not.
+
+## Play again
+
+Same teams, same assignments, same player order, scores and skips reset, **only the deck is
+reshuffled**. The game starts again from round 1, team 1, first guesser.
+
+## Things deliberately NOT in V1
+
+- No sudden death — tied teams are joint winners.
+- No individual scores — only the team's total counts.
+- No timer setting, no difficulty levels, no custom card packs.
+- No sensors, camera or microphone — the phone is passed and tapped by hand.

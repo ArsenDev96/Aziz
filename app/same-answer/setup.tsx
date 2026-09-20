@@ -76,10 +76,10 @@ export default function SameAnswerSetupScreen() {
   };
 
   const confirmRemove = (player: Player) =>
-    Alert.alert(format(copy.removeTitle, { name: player.name }), copy.removeBody, [
+    Alert.alert(format(strings.players.removeTitle, { name: player.name }), strings.players.removeBody, [
       { text: strings.common.cancel, style: 'cancel' },
       {
-        text: copy.removeConfirm,
+        text: strings.players.removeConfirm,
         style: 'destructive',
         onPress: () => {
           removePlayer(player.id);

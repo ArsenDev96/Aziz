@@ -2,8 +2,8 @@
 
 Armenian party games for one phone and a table full of people. Offline, no account, no backend.
 
-**Status: Phase 4 — first playable prototype.** Two game modes — Wrong Answer Only (200 questions)
-and Same Answer (100 team prompts) — in Armenian and English, deliberately unpolished. The next step is [a real
+**Status: Phase 4 — first playable prototype.** Three game modes — Wrong Answer Only (200 questions),
+Same Answer (100 team prompts) and Act It! (200 charades cards) — in Armenian and English, deliberately unpolished. The next step is [a real
 playtest](docs/PLAYTEST.md), not more features.
 
 ## Run it
@@ -36,6 +36,10 @@ npx expo-doctor      # project health
 | Same Answer: intro / rules | [`app/same-answer/intro.tsx`](app/same-answer/intro.tsx) |
 | Same Answer: team → think → 3-2-1 → SAY IT → match count → score | [`app/same-answer/play.tsx`](app/same-answer/play.tsx) |
 | Same Answer: standings, play again | [`app/same-answer/results.tsx`](app/same-answer/results.tsx) |
+| Act It!: make 2–4 teams from the shared roster | [`app/act-it/setup.tsx`](app/act-it/setup.tsx) |
+| Act It!: intro / rules | [`app/act-it/intro.tsx`](app/act-it/intro.tsx) |
+| Act It!: who guesses / who acts → 3-2-1-GO → cards + 45 s clock → TIME! | [`app/act-it/play.tsx`](app/act-it/play.tsx) |
+| Act It!: team standings, play again | [`app/act-it/results.tsx`](app/act-it/results.tsx) |
 
 The three in-game states live in one route on purpose: a route per turn would push a new screen
 onto the stack fifteen times a game.
@@ -45,13 +49,16 @@ onto the stack fifteen times a game.
 ```text
 app/                       screens (expo-router)
 src/
-  components/              Screen, AzizButton, Countdown
+  components/              Screen, AzizButton, Countdown, TurnTimer, TeamSetup
+  lib/                     feedback, random, storage, time, teams (shared team-setup validation)
   content/wrong-answer/    questions — en.ts and hy.ts, paired by id
   content/same-answer/     prompts — en.ts and hy.ts, paired by id
+  content/act-it/          cards — en.ts and hy.ts, paired by id
   locales/                 en.ts, hy.ts — every UI string
   modes/wrong-answer/      rules.ts (the numbers) + engine.ts (pure game logic)
   modes/same-answer/       rules.ts + engine.ts for the team mode, same split
-  state/                   settings, game (roster + Wrong Answer) and same-answer providers
+  modes/act-it/            rules.ts + engine.ts for the team charades mode, same split
+  state/                   settings, game (roster + Wrong Answer), same-answer, act-it providers
   theme/theme.ts           all colors and sizes
 tests/                     engine unit tests
 docs/                      RULES.md, PLAYTEST.md
@@ -69,8 +76,13 @@ never drifts from its original. Same Answer prompts follow the same pattern in
 
 ## Before Google Play
 
-- `am.aziz.party` in [`app.json`](app.json) is a placeholder — the real package name can never be
-  changed after the first upload, so decide it before the first release build.
-- Icons and the splash screen are still the Expo defaults (Phase 7).
+- `am.aziz.party` in [`app.json`](app.json) is the permanent Android package name — it can never be
+  changed after the first Play upload. Version 1.0.0, versionCode 1.
+- Production builds: `eas build --platform android --profile production` (see [`eas.json`](eas.json));
+  Android signing is EAS-managed, Play App Signing enrolls the upload key on first submission.
+- Branding lives in [`assets/branding/`](assets/branding/): `icon.png` (app icon), `adaptive-foreground.png` +
+  `monochrome.png` (Android adaptive/themed layers on the #0E0B1A brand background) and `splash-logo.png`
+  (`expo-splash-screen`, `imageWidth` in [`app.json`](app.json)). The native `android/` folder is
+  generated from these by `npx expo prebuild` and stays gitignored.
 - No sound yet (Phase 10), so Settings has no sound switch to toggle.
 - No analytics (Phase 14).

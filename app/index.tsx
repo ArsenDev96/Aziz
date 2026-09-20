@@ -1,6 +1,8 @@
-import { router, type Href } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Redirect, router, type Href } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { BrandLogo } from '@/components/BrandLogo';
+import { LanguagePicker } from '@/components/LanguagePicker';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
 import { useSettings } from '@/state/settings';
@@ -10,12 +12,18 @@ interface ModeCardProps {
   name: string;
   tagline: string;
   href: Href;
-  variant: 'primary' | 'accent';
+  variant: 'primary' | 'accent' | 'pass';
 }
 
 const ModeCard = ({ name, tagline, href, variant }: ModeCardProps) => {
   const feedback = useFeedback();
-  const primary = variant === 'primary';
+  const cardStyle =
+    variant === 'primary'
+      ? styles.cardPrimary
+      : variant === 'accent'
+        ? styles.cardAccent
+        : styles.cardPass;
+  const textStyle = variant === 'primary' ? styles.onPrimary : styles.onAccent;
   return (
     <Pressable
       accessibilityRole="button"
@@ -24,68 +32,84 @@ const ModeCard = ({ name, tagline, href, variant }: ModeCardProps) => {
         feedback.tap();
         router.push(href);
       }}
-      style={({ pressed }) => [
-        styles.card,
-        primary ? styles.cardPrimary : styles.cardAccent,
-        pressed && styles.cardPressed,
-      ]}
+      style={({ pressed }) => [styles.card, cardStyle, pressed && styles.cardPressed]}
     >
-      <Text style={[styles.cardName, primary ? styles.onPrimary : styles.onAccent]}>{name}</Text>
-      <Text style={[styles.cardTagline, primary ? styles.onPrimary : styles.onAccent]}>
-        {tagline}
-      </Text>
+      <Text style={[styles.cardName, textStyle]}>{name}</Text>
+      <Text style={[styles.cardTagline, textStyle]}>{tagline}</Text>
     </Pressable>
   );
 };
 
 export default function HomeScreen() {
-  const { strings, ready } = useSettings();
+  const { strings, ready, languageChosen } = useSettings();
   if (!ready) return <Screen />;
+  // First launch: pick a language before anything on Home is read.
+  if (!languageChosen) return <Redirect href="/language" />;
 
   return (
-    <Screen center>
-      <Animated.View entering={FadeInDown.duration(400)} style={styles.header}>
-        <Text style={styles.logo}>{strings.app.name}</Text>
-        <Text style={styles.tagline}>{strings.app.tagline}</Text>
-      </Animated.View>
+    <Screen style={styles.screen}>
+      {/* Language first: a new table should be able to switch before reading anything else. */}
+      <View style={styles.topBar}>
+        <LanguagePicker compact />
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
+        <Animated.View entering={FadeInDown.duration(400)} style={styles.header}>
+          <BrandLogo />
+          <Text style={styles.tagline}>{strings.app.tagline}</Text>
+        </Animated.View>
 
-      <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.actions}>
-        <Text style={styles.pickMode}>{strings.home.pickMode}</Text>
-        <ModeCard
-          name={strings.modes.wrongAnswer.name}
-          tagline={strings.modes.wrongAnswer.tagline}
-          href="/players"
-          variant="primary"
-        />
-        <ModeCard
-          name={strings.modes.sameAnswer.name}
-          tagline={strings.modes.sameAnswer.tagline}
-          href="/same-answer/setup"
-          variant="accent"
-        />
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/settings')}
-          style={styles.settingsLink}
-        >
-          <Text style={styles.settingsLabel}>{strings.home.settings}</Text>
-        </Pressable>
-      </Animated.View>
-      <View style={styles.spacer} />
+        <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.actions}>
+          <Text style={styles.pickMode}>{strings.home.pickMode}</Text>
+          <ModeCard
+            name={strings.modes.wrongAnswer.name}
+            tagline={strings.modes.wrongAnswer.tagline}
+            href="/players"
+            variant="primary"
+          />
+          <ModeCard
+            name={strings.modes.sameAnswer.name}
+            tagline={strings.modes.sameAnswer.tagline}
+            href="/same-answer/setup"
+            variant="accent"
+          />
+          <ModeCard
+            name={strings.modes.actIt.name}
+            tagline={strings.modes.actIt.tagline}
+            href="/act-it/setup"
+            variant="pass"
+          />
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push('/settings')}
+            style={styles.settingsLink}
+          >
+            <Text style={styles.settingsLabel}>{strings.home.settings}</Text>
+          </Pressable>
+        </Animated.View>
+      </ScrollView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    paddingTop: spacing(1),
+  },
+  topBar: {
+    alignItems: 'flex-end',
+  },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingVertical: spacing(2),
+  },
   header: {
     alignItems: 'center',
     gap: spacing(1),
-  },
-  logo: {
-    fontSize: 92,
-    fontWeight: '900',
-    color: colors.primary,
-    letterSpacing: 2,
   },
   tagline: {
     fontSize: font.body,
@@ -93,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   actions: {
-    marginTop: spacing(5),
+    marginTop: spacing(2),
     gap: spacing(1.5),
   },
   pickMode: {
@@ -116,6 +140,9 @@ const styles = StyleSheet.create({
   cardAccent: {
     backgroundColor: colors.accent,
   },
+  cardPass: {
+    backgroundColor: colors.pass,
+  },
   cardPressed: {
     opacity: 0.85,
     transform: [{ scale: 0.98 }],
@@ -137,13 +164,10 @@ const styles = StyleSheet.create({
   },
   settingsLink: {
     alignSelf: 'center',
-    padding: spacing(1.5),
+    padding: spacing(1),
   },
   settingsLabel: {
     color: colors.textMuted,
     fontSize: font.label,
-  },
-  spacer: {
-    height: spacing(6),
   },
 });

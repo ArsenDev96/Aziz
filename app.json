@@ -3,9 +3,9 @@
     "name": "AZIZ",
     "slug": "aziz",
     "scheme": "aziz",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/branding/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0E0B1A",
     "ios": {
@@ -16,19 +16,32 @@
       "package": "am.aziz.party",
       "versionCode": 1,
       "adaptiveIcon": {
+        "foregroundImage": "./assets/branding/adaptive-foreground.png",
         "backgroundColor": "#0E0B1A",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "monochromeImage": "./assets/branding/monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/branding/splash-logo.png",
+          "backgroundColor": "#0E0B1A",
+          "resizeMode": "contain",
+          "imageWidth": 220
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

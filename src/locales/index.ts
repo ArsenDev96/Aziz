@@ -11,6 +11,12 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   en: 'English',
 };
 
+/** First-launch prompt, shown in every language at once because no locale is chosen yet. */
+export const LANGUAGE_PROMPTS: Record<Language, string> = {
+  hy: 'Ընտրիր լեզուն',
+  en: 'Choose language',
+};
+
 const dictionaries: Record<Language, Strings> = { en, hy };
 
 export const getStrings = (language: Language): Strings => dictionaries[language];

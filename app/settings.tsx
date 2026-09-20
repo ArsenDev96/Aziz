@@ -1,13 +1,14 @@
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { LanguagePicker } from '@/components/LanguagePicker';
 import { Screen } from '@/components/Screen';
-import { format, LANGUAGE_LABELS, LANGUAGES } from '@/locales';
+import { format } from '@/locales';
 import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing } from '@/theme/theme';
 
 export default function SettingsScreen() {
-  const { settings, strings, setLanguage, setHaptics } = useSettings();
+  const { settings, strings, setHaptics } = useSettings();
 
   return (
     <Screen>
@@ -15,24 +16,7 @@ export default function SettingsScreen() {
 
       <View style={styles.block}>
         <Text style={styles.label}>{strings.settings.language}</Text>
-        <View style={styles.languageRow}>
-          {LANGUAGES.map((language) => {
-            const selected = settings.language === language;
-            return (
-              <Pressable
-                key={language}
-                accessibilityRole="radio"
-                accessibilityState={{ selected }}
-                onPress={() => setLanguage(language)}
-                style={[styles.languageChip, selected && styles.languageChipSelected]}
-              >
-                <Text style={[styles.languageLabel, selected && styles.languageLabelSelected]}>
-                  {LANGUAGE_LABELS[language]}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
+        <LanguagePicker />
       </View>
 
       <View style={[styles.block, styles.switchRow]}>
@@ -80,29 +64,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: font.body,
     fontWeight: '700',
-  },
-  languageRow: {
-    flexDirection: 'row',
-    gap: spacing(1),
-  },
-  languageChip: {
-    paddingVertical: spacing(1.25),
-    paddingHorizontal: spacing(2.5),
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  languageChipSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  languageLabel: {
-    color: colors.textMuted,
-    fontSize: font.label,
-    fontWeight: '700',
-  },
-  languageLabelSelected: {
-    color: colors.onPrimary,
   },
   spacer: {
     flex: 1,

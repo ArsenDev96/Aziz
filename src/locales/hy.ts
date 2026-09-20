@@ -64,7 +64,8 @@ export const hy: Strings = {
     team: 'Թիմ {number}',
     teamChipA11y: '{name}-ին դնել {number}-րդ թիմում',
     sitOut: 'Դուրս',
-    sitOutA11y: '{name}-ը չի խաղում',
+    // {name} arrives with its definite article already attached (see locales/armenian.ts).
+    sitOutA11y: '{name} չի խաղում',
     teamSummary: '{count} հոգի',
     errorTooFewPlayers: 'Ընտրիր առնվազն {min} խաղացող',
     errorTooManyPlayers: 'Առավելագույնը {max} խաղացող',
@@ -99,7 +100,8 @@ export const hy: Strings = {
     teamCountA11y: '{count} թիմ',
     team: 'Թիմ {number}',
     teamChipA11y: '{name}-ին դնել {number}-րդ թիմում',
-    sitOutA11y: '{name}-ը չի խաղում',
+    // {name} arrives with its definite article already attached (see locales/armenian.ts).
+    sitOutA11y: '{name} չի խաղում',
     teamSummary: '{count} հոգի',
     errorTooFewPlayers: 'Ընտրիր առնվազն {min} խաղացող',
     errorTooManyPlayers: 'Առավելագույնը {max} խաղացող',
@@ -111,7 +113,8 @@ export const hy: Strings = {
     start: 'ՍԿՍԵԼ',
     turnCount: 'Հերթ {current} / {total}',
     roundCount: 'Ռաունդ {current} / {total}',
-    guesserTitle: '{name}-ը գուշակում է',
+    // {name} arrives with its definite article already attached.
+    guesserTitle: '{name} գուշակում է',
     actorsOne: 'Ցույց է տալիս՝ {name}',
     actorsMany: 'Ցույց են տալիս՝ {names}',
     and: 'և',
@@ -124,7 +127,7 @@ export const hy: Strings = {
     correct: 'ՃԻՇՏ Է',
     skip: 'ԲԱՑ ԹՈՂՆԵԼ',
     timeUp: 'ԺԱՄԱՆԱ՛ԿԸ',
-    gotScore: '{name}-ը գուշակեց {score}',
+    gotScore: '{name} գուշակեց {score}',
     teamTotal: '{team}՝ ընդամենը {score}',
     next: 'ՀԱՋՈՐԴԸ',
     seeResults: 'ԱՐԴՅՈՒՆՔՆԵՐԸ',
@@ -138,7 +141,8 @@ export const hy: Strings = {
     hint: 'Պատասխանիր ՍԽԱԼ',
   },
   judge: {
-    heading: '{name}-ը սխա՞լ պատասխանեց',
+    // {name} arrives with its definite article already attached.
+    heading: '{name} սխա՞լ պատասխանեց',
     pass: 'ԱՆՑԱՎ',
     fail: 'ԿՏՐՎԵՑ',
   },
@@ -163,6 +167,11 @@ export const hy: Strings = {
     off: 'Անջատված',
     back: 'Հետ',
     version: 'Տարբերակ {version}',
+  },
+  error: {
+    title: 'Ինչ-որ բան սխալ գնաց',
+    body: 'Խաղը խնդրի հանդիպեց, որից չկարողացավ դուրս գալ։ Անուններն ու կարգավորումները տեղում են։',
+    home: 'ԳԼԽԱՎՈՐ',
   },
   common: {
     quit: 'Ավարտել խաղը',

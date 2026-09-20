@@ -2,8 +2,9 @@ import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { useFeedback } from '@/lib/feedback';
-import { format } from '@/locales';
+import { format, subjectName } from '@/locales';
 import type { TeamAssignments } from '@/lib/teams';
+import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing, teamColor } from '@/theme/theme';
 
 interface Player {
@@ -63,6 +64,7 @@ export const TeamSetup = ({
   onInteract,
 }: TeamSetupProps) => {
   const feedback = useFeedback();
+  const { settings } = useSettings();
 
   return (
     <>
@@ -139,7 +141,9 @@ export const TeamSetup = ({
                       accessibilityState={{ selected }}
                       accessibilityLabel={
                         selected
-                          ? format(copy.sitOutA11y, { name: player.name })
+                          ? format(copy.sitOutA11y, {
+                              name: subjectName(settings.language, player.name),
+                            })
                           : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
                       }
                       onPress={() => {

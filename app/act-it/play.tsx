@@ -1,18 +1,28 @@
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
+import { useKeepAwake } from 'expo-keep-awake';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Countdown } from '@/components/Countdown';
 import { Screen } from '@/components/Screen';
 import { TurnTimer } from '@/components/TurnTimer';
 import { useFeedback } from '@/lib/feedback';
-import { format } from '@/locales';
+import { useQuitConfirm } from '@/lib/quit-confirm';
+import { createTapGuard } from '@/lib/tap-guard';
+import { format, subjectName } from '@/locales';
 import { canSkip, isLastTurn, roundProgress, skipsLeft, turnProgress } from '@/modes/act-it/engine';
 import { goHoldMs, startCountdownMs, turnMs } from '@/modes/act-it/rules';
 import { useActIt } from '@/state/act-it';
-import { useStrings } from '@/state/settings';
+import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing, teamColor } from '@/theme/theme';
+
+/**
+ * How long CORRECT and SKIP stay deaf after one of them is accepted. Long enough to swallow a
+ * double tap, short enough that the next card (which pops in over 160 ms) is live by the time
+ * anyone can read it. Not a game rule — the engine never sees the second tap.
+ */
+const ACTION_LOCK_MS = 350;
 
 interface StartCountdownProps {
   label: string;
@@ -54,12 +64,20 @@ const joinNames = (names: string[], and: string): string =>
   names.length <= 1 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} ${and} ${names[names.length - 1]}`;
 
 export default function ActItPlayScreen() {
-  const strings = useStrings();
+  const { strings, settings } = useSettings();
   const feedback = useFeedback();
   const { state, card, team, guesser, actors, ready, go, markCorrect, skip, timeUp, next, quit } =
     useActIt();
   const copy = strings.actIt;
   const turnIndex = state?.turnIndex ?? 0;
+  // One guard for both action buttons: a physical tap is one engine action, never two.
+  const [actionGuard] = useState(() => createTapGuard(ACTION_LOCK_MS));
+
+  // The phone is held to a forehead for 45 seconds: never let it sleep mid-turn.
+  useKeepAwake();
+  // ✕ and Android Back share one confirmation. During the live clock the ✕ is hidden on
+  // purpose, but Back still has to ask rather than drop the turn.
+  const confirmQuit = useQuitConfirm(quit, state !== null && state.phase !== 'results');
 
   // Someone deep-linked or reloaded without a game in progress.
   if (!state) return <Redirect href="/" />;
@@ -68,25 +86,13 @@ export default function ActItPlayScreen() {
 
   const palette = teamColor(team.number - 1);
   const teamName = format(copy.team, { number: team.number });
+  const guesserName = subjectName(settings.language, guesser.name);
   const progress = turnProgress(state);
   const round = roundProgress(state);
   const actorLine =
     actors.length === 1
       ? format(copy.actorsOne, { name: actors[0].name })
       : format(copy.actorsMany, { names: joinNames(actors.map((player) => player.name), copy.and) });
-
-  const confirmQuit = () =>
-    Alert.alert(strings.common.quitConfirmTitle, strings.common.quitConfirmBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.common.confirm,
-        style: 'destructive',
-        onPress: () => {
-          quit();
-          router.replace('/');
-        },
-      },
-    ]);
 
   const teamBadge = (
     <View style={[styles.teamBadge, { backgroundColor: palette.bg }]}>
@@ -127,7 +133,7 @@ export default function ActItPlayScreen() {
             adjustsFontSizeToFit
             minimumFontScale={0.6}
           >
-            {format(copy.guesserTitle, { name: guesser.name })}
+            {format(copy.guesserTitle, { name: guesserName })}
           </Text>
           <Text style={styles.actors}>{actorLine}</Text>
           <View style={styles.hintCard}>
@@ -175,8 +181,10 @@ export default function ActItPlayScreen() {
               size="huge"
               disabled={!canSkip(state)}
               onPress={() => {
-                feedback.fail();
-                skip();
+                actionGuard.accept(() => {
+                  feedback.fail();
+                  skip();
+                });
               }}
             />
             <AzizButton
@@ -184,8 +192,10 @@ export default function ActItPlayScreen() {
               variant="pass"
               size="huge"
               onPress={() => {
-                feedback.pass();
-                markCorrect();
+                actionGuard.accept(() => {
+                  feedback.pass();
+                  markCorrect();
+                });
               }}
             />
           </View>
@@ -196,7 +206,7 @@ export default function ActItPlayScreen() {
         <Animated.View key={`timeup-${turnIndex}`} entering={FadeInDown.duration(220)} style={styles.body}>
           <Text style={styles.timeUp}>{copy.timeUp}</Text>
           <Text style={styles.gotScore}>
-            {format(copy.gotScore, { name: guesser.name, score: state.turnCorrect })}
+            {format(copy.gotScore, { name: guesserName, score: state.turnCorrect })}
           </Text>
           <Text style={[styles.teamTotal, { color: palette.bg }]}>
             {format(copy.teamTotal, { team: teamName, score: state.scores[team.id] })}

@@ -19,19 +19,33 @@ export const DEFAULT_SETTINGS: Settings = {
   timerSeconds: WRONG_ANSWER_RULES.defaultTimerSeconds,
 };
 
+const isLanguage = (value: unknown): value is Language =>
+  typeof value === 'string' && (LANGUAGES as string[]).includes(value);
+
+const asRecord = (stored: unknown): Record<string, unknown> =>
+  stored !== null && typeof stored === 'object' && !Array.isArray(stored)
+    ? (stored as Record<string, unknown>)
+    : {};
+
 /**
- * Merges whatever storage returned over the defaults. Older installs have no timer saved,
- * and a stale value from a removed option must not leak into a game, so the timer is
- * re-validated against the rules.
+ * Rebuilds the settings from whatever storage returned, one field at a time. Older installs
+ * have no timer saved, a stale value from a removed option must not leak into a game, and a
+ * language code the app does not ship would leave every screen without strings — so each
+ * scalar is validated and falls back to its default rather than trusted.
  */
 export const hydrateSettings = (stored: Partial<Settings> | null | undefined): Settings => {
-  const merged = { ...DEFAULT_SETTINGS, ...(stored ?? {}) };
-  return { ...merged, timerSeconds: normalizeTimerSeconds(merged.timerSeconds) };
+  const raw = asRecord(stored);
+  return {
+    language: isLanguage(raw.language) ? raw.language : DEFAULT_SETTINGS.language,
+    haptics: typeof raw.haptics === 'boolean' ? raw.haptics : DEFAULT_SETTINGS.haptics,
+    timerSeconds: normalizeTimerSeconds(raw.timerSeconds),
+  };
 };
 
 /**
  * True once the player has picked a language (a valid one is in storage). A fresh install has
- * nothing stored, so the app asks first instead of silently defaulting.
+ * nothing stored — and a corrupt value counts as nothing — so the app asks first instead of
+ * silently defaulting.
  */
 export const hasChosenLanguage = (stored: Partial<Settings> | null | undefined): boolean =>
-  stored?.language !== undefined && LANGUAGES.includes(stored.language);
+  isLanguage(asRecord(stored).language);

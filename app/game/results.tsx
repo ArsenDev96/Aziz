@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     borderColor: colors.accent,
   },
   medal: {
+    color: colors.text,
     fontSize: font.body,
     width: spacing(4),
   },

@@ -1,11 +1,13 @@
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
+import { useKeepAwake } from 'expo-keep-awake';
 import { useEffect } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Countdown } from '@/components/Countdown';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
+import { useQuitConfirm } from '@/lib/quit-confirm';
 import { format } from '@/locales';
 import {
   currentMatchChoices,
@@ -27,6 +29,11 @@ export default function SameAnswerPlayScreen() {
   const copy = strings.sameAnswer;
   const phase = state?.phase;
 
+  // The phone sits on the table while the team thinks and argues: never let it sleep mid-game.
+  useKeepAwake();
+  // ✕ and Android Back share one confirmation while a game is in progress.
+  const confirmQuit = useQuitConfirm(quit, state !== null && phase !== 'results');
+
   // SAY IT stays up for a beat, then the match selector takes over on its own.
   useEffect(() => {
     if (phase !== 'sayIt') return;
@@ -47,19 +54,6 @@ export default function SameAnswerPlayScreen() {
   const members = teamPlayers(state, team);
   const progress = turnProgress(state);
   const round = roundProgress(state);
-
-  const confirmQuit = () =>
-    Alert.alert(strings.common.quitConfirmTitle, strings.common.quitConfirmBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.common.confirm,
-        style: 'destructive',
-        onPress: () => {
-          quit();
-          router.replace('/');
-        },
-      },
-    ]);
 
   const teamBadge = (
     <View style={[styles.teamBadge, { backgroundColor: palette.bg }]}>

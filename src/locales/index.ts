@@ -1,3 +1,4 @@
+import { withArmenianArticle } from './armenian';
 import { en } from './en';
 import { hy } from './hy';
 import type { Language, Strings } from './types';
@@ -20,6 +21,13 @@ export const LANGUAGE_PROMPTS: Record<Language, string> = {
 const dictionaries: Record<Language, Strings> = { en, hy };
 
 export const getStrings = (language: Language): Strings => dictionaries[language];
+
+/**
+ * A player's name as the subject of a sentence. Armenian needs its definite article
+ * ("Անին գուշակում է"); English uses the bare name.
+ */
+export const subjectName = (language: Language, name: string): string =>
+  language === 'hy' ? withArmenianArticle(name) : name;
 
 /** Replaces {placeholders} in a locale string. */
 export const format = (

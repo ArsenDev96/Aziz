@@ -1,11 +1,13 @@
-import { Redirect, router } from 'expo-router';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Redirect } from 'expo-router';
+import { useKeepAwake } from 'expo-keep-awake';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Countdown } from '@/components/Countdown';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
-import { format } from '@/locales';
+import { useQuitConfirm } from '@/lib/quit-confirm';
+import { format, subjectName } from '@/locales';
 import {
   currentPlayer,
   currentTimerMs,
@@ -13,13 +15,18 @@ import {
   turnProgress,
 } from '@/modes/wrong-answer/engine';
 import { useGame } from '@/state/game';
-import { useStrings } from '@/state/settings';
+import { useSettings } from '@/state/settings';
 import { colors, font, spacing } from '@/theme/theme';
 
 export default function PlayScreen() {
-  const strings = useStrings();
+  const { strings, settings } = useSettings();
   const feedback = useFeedback();
   const { state, question, beginQuestion, endQuestion, judge, quit } = useGame();
+
+  // The phone is passed around and read from across the table: never let it sleep mid-game.
+  useKeepAwake();
+  // ✕ and Android Back share one confirmation while a game is in progress.
+  const confirmQuit = useQuitConfirm(quit, state !== null && state.phase !== 'results');
 
   // Someone deep-linked or reloaded without a game in progress.
   if (!state) return <Redirect href="/" />;
@@ -31,19 +38,6 @@ export default function PlayScreen() {
 
   const progress = turnProgress(state);
   const isSuddenDeath = turn.suddenDeathRound > 0;
-
-  const confirmQuit = () =>
-    Alert.alert(strings.common.quitConfirmTitle, strings.common.quitConfirmBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.common.confirm,
-        style: 'destructive',
-        onPress: () => {
-          quit();
-          router.replace('/');
-        },
-      },
-    ]);
 
   return (
     <Screen>
@@ -95,7 +89,7 @@ export default function PlayScreen() {
         >
           <Text style={styles.questionSmall}>{question.text}</Text>
           <Text style={styles.judgeHeading}>
-            {format(strings.judge.heading, { name: player.name })}
+            {format(strings.judge.heading, { name: subjectName(settings.language, player.name) })}
           </Text>
           <View style={styles.verdictRow}>
             <AzizButton

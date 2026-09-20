@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
@@ -11,8 +11,11 @@ import { colors, font, radius, spacing } from '@/theme/theme';
 
 export default function GameIntroScreen() {
   const { settings, strings } = useSettings();
-  const { startGame } = useGame();
+  const { canStart, startGame } = useGame();
   const mode = strings.modes.wrongAnswer;
+
+  // Someone deep-linked or reloaded without enough players: createGame would throw.
+  if (!canStart) return <Redirect href="/players" />;
 
   const rules = [
     mode.rule1,

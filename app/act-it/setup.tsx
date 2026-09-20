@@ -98,6 +98,7 @@ export default function ActItSetupScreen() {
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
+        <Text style={styles.kicker}>{strings.modes.actIt.name}</Text>
         <Text style={styles.title}>{copy.setupTitle}</Text>
         <Text style={styles.subtitle}>
           {format(copy.setupSubtitle, {
@@ -158,6 +159,13 @@ export default function ActItSetupScreen() {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+  },
+  kicker: {
+    color: colors.pass,
+    fontSize: font.label,
+    fontWeight: '700',
+    letterSpacing: 1,
+    marginBottom: spacing(0.5),
   },
   title: {
     fontSize: font.title,

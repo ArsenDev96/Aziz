@@ -162,6 +162,11 @@ export const en = {
     back: 'Back',
     version: 'Version {version}',
   },
+  error: {
+    title: 'Something went wrong',
+    body: 'The game hit a problem it could not recover from. Your names and settings are safe.',
+    home: 'HOME',
+  },
   common: {
     quit: 'Quit game',
     quitConfirmTitle: 'Quit this game?',

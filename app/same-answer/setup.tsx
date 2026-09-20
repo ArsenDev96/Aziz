@@ -15,7 +15,7 @@ import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
-import { format, type Strings } from '@/locales';
+import { format, subjectName, type Strings } from '@/locales';
 import type { Player, SetupError } from '@/modes/same-answer/engine';
 import { SAME_ANSWER_RULES } from '@/modes/same-answer/rules';
 import { WRONG_ANSWER_RULES } from '@/modes/wrong-answer/rules';
@@ -49,7 +49,7 @@ const errorMessage = (error: SetupError, strings: Strings['sameAnswer']): string
 };
 
 export default function SameAnswerSetupScreen() {
-  const { strings } = useSettings();
+  const { strings, settings } = useSettings();
   const feedback = useFeedback();
   // The roster (and its persistence) is shared with Wrong Answer Only.
   const { addPlayer, removePlayer } = useGame();
@@ -102,6 +102,7 @@ export default function SameAnswerSetupScreen() {
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
+        <Text style={styles.kicker}>{strings.modes.sameAnswer.name}</Text>
         <Text style={styles.title}>{copy.setupTitle}</Text>
         <Text style={styles.subtitle}>
           {format(copy.setupSubtitle, {
@@ -207,7 +208,9 @@ export default function SameAnswerSetupScreen() {
                         accessibilityState={{ selected }}
                         accessibilityLabel={
                           selected
-                            ? format(copy.sitOutA11y, { name: player.name })
+                            ? format(copy.sitOutA11y, {
+                                name: subjectName(settings.language, player.name),
+                              })
                             : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
                         }
                         onPress={() => {
@@ -279,6 +282,13 @@ export default function SameAnswerSetupScreen() {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+  },
+  kicker: {
+    color: colors.accent,
+    fontSize: font.label,
+    fontWeight: '700',
+    letterSpacing: 1,
+    marginBottom: spacing(0.5),
   },
   title: {
     fontSize: font.title,

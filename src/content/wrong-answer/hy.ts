@@ -164,7 +164,7 @@ export const wrongAnswerHy: Question[] = [
   { id: 'wa-144', category: 'funny', text: 'Հյուսիսային բևեռում ցու՞րտ է, թե՞ շոգ։' },
   { id: 'wa-145', category: 'general', text: 'Ծովի ջուրն աղի՞ է, թե՞ քաղցր։' },
   { id: 'wa-146', category: 'general', text: 'Ինչո՞վ ես ծամում։' },
-  { id: 'wa-147', category: 'general', text: 'Վարորդն ինչո՞վ է մեքենան շրջում։' },
+  { id: 'wa-147', category: 'general', text: 'Վարորդն ինչո՞վ է մեքենան ղեկավարում։' },
   { id: 'wa-148', category: 'general', text: 'Մոտոցիկլ քշելիս գլխիդ ի՞նչ ես դնում։' },
   { id: 'wa-149', category: 'general', text: 'Մատիտով գրածն ինչո՞վ ես ջնջում։' },
   { id: 'wa-150', category: 'funny', text: 'Ո՞րն է մեծ՝ քաղաքը, թե՞ գյուղը։' },

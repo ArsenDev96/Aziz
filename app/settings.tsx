@@ -1,14 +1,31 @@
 import Constants from 'expo-constants';
+import { openURL } from 'expo-linking';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { LanguagePicker } from '@/components/LanguagePicker';
 import { Screen } from '@/components/Screen';
 import { format } from '@/locales';
 import { useSettings } from '@/state/settings';
 import { colors, font, radius, spacing } from '@/theme/theme';
 
+/** Public privacy policy, also linked from the Play Store listing. */
+const PRIVACY_POLICY_URL = 'https://aziz-party.vercel.app/privacy';
+
 export default function SettingsScreen() {
   const { settings, strings, setHaptics } = useSettings();
+
+  // Opens in the system browser. A device with nothing to handle the URL rejects the
+  // promise; tell the reader the address instead of crashing.
+  const openPrivacyPolicy = async () => {
+    try {
+      await openURL(PRIVACY_POLICY_URL);
+    } catch {
+      Alert.alert(
+        strings.settings.privacyPolicyErrorTitle,
+        format(strings.settings.privacyPolicyErrorBody, { url: PRIVACY_POLICY_URL }),
+      );
+    }
+  };
 
   return (
     <Screen>
@@ -30,6 +47,16 @@ export default function SettingsScreen() {
       </View>
 
       <View style={styles.spacer} />
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={strings.settings.privacyPolicy}
+        onPress={openPrivacyPolicy}
+        style={({ pressed }) => [styles.block, styles.linkRow, pressed && styles.linkRowPressed]}
+      >
+        {/* The Armenian label wraps at 360dp: it gives way so the glyph keeps its padding. */}
+        <Text style={[styles.label, styles.linkLabel]}>{strings.settings.privacyPolicy}</Text>
+        <Text style={styles.linkGlyph}>↗</Text>
+      </Pressable>
       <Text style={styles.version}>
         {format(strings.settings.version, {
           version: Constants.expoConfig?.version ?? '0.1.0',
@@ -67,6 +94,24 @@ const styles = StyleSheet.create({
   },
   spacer: {
     flex: 1,
+  },
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 0,
+    marginBottom: spacing(2),
+  },
+  linkRowPressed: {
+    opacity: 0.85,
+  },
+  linkLabel: {
+    flex: 1,
+    marginRight: spacing(1),
+  },
+  linkGlyph: {
+    color: colors.textMuted,
+    fontSize: font.body,
   },
   version: {
     color: colors.textMuted,

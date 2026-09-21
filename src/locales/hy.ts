@@ -118,7 +118,7 @@ export const hy: Strings = {
     actorsOne: 'Ցույց է տալիս՝ {name}',
     actorsMany: 'Ցույց են տալիս՝ {names}',
     and: 'և',
-    guesserHint: 'Հեռախոսը պահիր ճակատիդ՝ էկրանը դեպի թիմակիցներդ։ Դու չպետք է տեսնես, նրանք՝ պետք է։',
+    guesserHint: 'Էկրանը պահիր թիմակիցներիդ կողմը, իսկ դու մի նայիր։',
     ready: 'ՊԱՏՐԱ՛ՍՏ ԵՄ',
     go: 'ԳՆԱ՛Ց',
     actorHint: 'Ցույց տվեք առանց խոսելու։',
@@ -167,6 +167,9 @@ export const hy: Strings = {
     off: 'Անջատված',
     back: 'Հետ',
     version: 'Տարբերակ {version}',
+    privacyPolicy: 'Գաղտնիության քաղաքականություն',
+    privacyPolicyErrorTitle: 'Հղումը չհաջողվեց բացել',
+    privacyPolicyErrorBody: 'Բացիր {url} հասցեն զննարկիչում։',
   },
   error: {
     title: 'Ինչ-որ բան սխալ գնաց',

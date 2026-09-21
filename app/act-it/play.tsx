@@ -73,7 +73,7 @@ export default function ActItPlayScreen() {
   // One guard for both action buttons: a physical tap is one engine action, never two.
   const [actionGuard] = useState(() => createTapGuard(ACTION_LOCK_MS));
 
-  // The phone is held to a forehead for 45 seconds: never let it sleep mid-turn.
+  // The phone is held up for the team for 45 seconds: never let it sleep mid-turn.
   useKeepAwake();
   // ✕ and Android Back share one confirmation. During the live clock the ✕ is hidden on
   // purpose, but Back still has to ask rather than drop the turn.

@@ -127,7 +127,7 @@ change them there, nowhere else.
 3. Cards are dealt from a **shuffled deck with no repeats for the whole game** (200 cards per
    language) — the deck is not reset between teams. If a game somehow used all 200, it wraps.
 4. Each turn: the pre-turn screen names the team, the guesser and the actor(s) → the guesser
-   holds the phone against their forehead, screen facing their team → `READY` → 3-2-1-GO → the
+   holds the screen toward their team without looking at it → `READY` → 3-2-1-GO → the
    actors see one word at a time and tap `CORRECT` or `SKIP` → `TIME!` shows what the guesser got
    this turn and the team's running total → `NEXT`.
 5. After the last scheduled turn the team standings appear.

@@ -113,7 +113,7 @@ export const en = {
     actorsOne: '{name} acts',
     actorsMany: '{names} act',
     and: 'and',
-    guesserHint: 'Hold the phone against your forehead, screen facing your team. You must not see it — they must.',
+    guesserHint: 'Hold the screen toward your teammates, and don’t look.',
     ready: 'READY',
     go: 'GO!',
     actorHint: 'Act it out. No talking!',
@@ -161,6 +161,9 @@ export const en = {
     off: 'Off',
     back: 'Back',
     version: 'Version {version}',
+    privacyPolicy: 'Privacy Policy',
+    privacyPolicyErrorTitle: 'Could not open the link',
+    privacyPolicyErrorBody: 'Open {url} in a browser instead.',
   },
   error: {
     title: 'Something went wrong',

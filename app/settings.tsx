@@ -10,22 +10,36 @@ import { colors, font, radius, spacing } from '@/theme/theme';
 
 /** Public privacy policy, also linked from the Play Store listing. */
 const PRIVACY_POLICY_URL = 'https://aziz-party.vercel.app/privacy';
+/** Support inbox; the composer opens with only the subject filled in. */
+const SUPPORT_EMAIL = 'arsmanukyandev@gmail.com';
+const SUPPORT_MAILTO = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('AZIZ Support')}`;
 
 export default function SettingsScreen() {
   const { settings, strings, setHaptics } = useSettings();
 
-  // Opens in the system browser. A device with nothing to handle the URL rejects the
-  // promise; tell the reader the address instead of crashing.
-  const openPrivacyPolicy = async () => {
+  // Hands the URL to the system (browser, mail app). A device with nothing to handle it
+  // rejects the promise; tell the reader the address instead of crashing.
+  const openExternal = async (url: string, errorTitle: string, errorBody: string) => {
     try {
-      await openURL(PRIVACY_POLICY_URL);
+      await openURL(url);
     } catch {
-      Alert.alert(
-        strings.settings.privacyPolicyErrorTitle,
-        format(strings.settings.privacyPolicyErrorBody, { url: PRIVACY_POLICY_URL }),
-      );
+      Alert.alert(errorTitle, errorBody);
     }
   };
+
+  const openPrivacyPolicy = () =>
+    openExternal(
+      PRIVACY_POLICY_URL,
+      strings.settings.privacyPolicyErrorTitle,
+      format(strings.settings.privacyPolicyErrorBody, { url: PRIVACY_POLICY_URL }),
+    );
+
+  const contactSupport = () =>
+    openExternal(
+      SUPPORT_MAILTO,
+      strings.settings.supportErrorTitle,
+      format(strings.settings.supportErrorBody, { email: SUPPORT_EMAIL }),
+    );
 
   return (
     <Screen>
@@ -47,6 +61,15 @@ export default function SettingsScreen() {
       </View>
 
       <View style={styles.spacer} />
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={strings.settings.support}
+        onPress={contactSupport}
+        style={({ pressed }) => [styles.block, styles.linkRow, pressed && styles.linkRowPressed]}
+      >
+        <Text style={[styles.label, styles.linkLabel]}>{strings.settings.support}</Text>
+        <Text style={styles.linkGlyph}>↗</Text>
+      </Pressable>
       <Pressable
         accessibilityRole="link"
         accessibilityLabel={strings.settings.privacyPolicy}

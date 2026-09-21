@@ -164,6 +164,9 @@ export const en = {
     privacyPolicy: 'Privacy Policy',
     privacyPolicyErrorTitle: 'Could not open the link',
     privacyPolicyErrorBody: 'Open {url} in a browser instead.',
+    support: 'Contact Support',
+    supportErrorTitle: 'Could not open email',
+    supportErrorBody: 'Email us at {email}',
   },
   error: {
     title: 'Something went wrong',

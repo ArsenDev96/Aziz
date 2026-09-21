@@ -170,6 +170,9 @@ export const hy: Strings = {
     privacyPolicy: 'Գաղտնիության քաղաքականություն',
     privacyPolicyErrorTitle: 'Հղումը չհաջողվեց բացել',
     privacyPolicyErrorBody: 'Բացիր {url} հասցեն զննարկիչում։',
+    support: 'Կապվել աջակցության հետ',
+    supportErrorTitle: 'Չհաջողվեց բացել էլ․ փոստը',
+    supportErrorBody: 'Գրիր մեզ՝ {email}',
   },
   error: {
     title: 'Ինչ-որ բան սխալ գնաց',

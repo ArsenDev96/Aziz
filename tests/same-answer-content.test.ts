@@ -8,7 +8,7 @@ import {
 import { sameAnswerEn } from '../src/content/same-answer/en';
 import { sameAnswerHy } from '../src/content/same-answer/hy';
 
-const DECK_SIZE = 100;
+const DECK_SIZE = 200;
 
 /** A prompt is read out loud and has to fit on one screen above a countdown. */
 const MAX_TEXT_LENGTH = 60;

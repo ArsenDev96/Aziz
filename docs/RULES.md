@@ -66,7 +66,7 @@ nowhere else.
 
 1. Teams are built on the setup screen from the shared player roster. Team order is fixed:
    Team 1 → Team 2 → Team 3 → Team 4 → Team 1…
-2. Prompts are dealt from a **shuffled deck with no repeats** inside a session (100 prompts per
+2. Prompts are dealt from a **shuffled deck with no repeats** inside a session (200 prompts per
    language, at most 20 used per game).
 3. Each turn: team screen + `READY` → prompt with the 5 second thinking clock → 3-2-1-SAY IT →
    the group taps how many teammates said the same thing → the points show → `NEXT`.

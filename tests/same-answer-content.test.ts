@@ -78,12 +78,8 @@ describe('prompt ids', () => {
     }
   });
 
-  it('paired prompts share a category', () => {
-    const en = getSameAnswerPromptMap('en');
-    for (const prompt of sameAnswerHy) {
-      assert.equal(prompt.category, en[prompt.id].category, prompt.id);
-    }
-  });
+  // The decks are deliberately not translations of each other (Armenian is Armenia-first,
+  // English is international), so nothing here compares the meaning or category of a pair.
 });
 
 describe('prompt text', () => {
@@ -136,7 +132,7 @@ describe('prompt text', () => {
 
   it('English prompts are written in Latin letters and end with a full stop', () => {
     for (const prompt of sameAnswerEn) {
-      assert.doesNotMatch(prompt.text, /[԰-֏]/, `${prompt.id} has Armenian letters`);
+      assert.doesNotMatch(prompt.text, /[԰-֏Ѐ-ӿ]/, `${prompt.id} has Armenian or Cyrillic letters`);
       assert.ok(prompt.text.endsWith('.'), `${prompt.id} does not end with .`);
     }
   });

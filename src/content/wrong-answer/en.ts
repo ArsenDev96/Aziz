@@ -4,7 +4,9 @@ import type { Question } from './types';
  * Wrong Answer Only deck — 200 questions.
  * Rules for every question: instantly understood, one obvious answer,
  * short enough to read out loud inside a 2.5 second clock, no special knowledge.
- * Ids are shared with `hy.ts`; add a question to both files or to neither.
+ * Ids are shared with `hy.ts`; add a question to both files or to neither. The two decks are
+ * not translations: Armenian is Armenia-first, English must be obvious to anyone with no
+ * Armenian background, so the same id can carry a completely different question.
  */
 export const wrongAnswerEn: Question[] = [
   { id: 'wa-001', category: 'general', text: 'What color is snow?' },
@@ -13,7 +15,7 @@ export const wrongAnswerEn: Question[] = [
   { id: 'wa-004', category: 'general', text: 'What do you drink when you are thirsty?' },
   { id: 'wa-005', category: 'general', text: 'What do you put on your finger at a wedding?' },
   { id: 'wa-006', category: 'general', text: 'What do you use to call someone?' },
-  { id: 'wa-007', category: 'armenia', text: 'What country is Yerevan in?' },
+  { id: 'wa-007', category: 'general', text: 'What animal says moo?' },
   { id: 'wa-008', category: 'general', text: 'What do cows give us?' },
   { id: 'wa-009', category: 'general', text: 'What do you put on before your shoes?' },
   { id: 'wa-010', category: 'general', text: 'What do you open a door with?' },
@@ -34,7 +36,7 @@ export const wrongAnswerEn: Question[] = [
   { id: 'wa-025', category: 'general', text: 'Which animal barks?' },
   { id: 'wa-026', category: 'general', text: 'What do you look in to see yourself?' },
   { id: 'wa-027', category: 'general', text: 'What do birds have that lets them fly?' },
-  { id: 'wa-028', category: 'armenia', text: 'What is the capital of Armenia?' },
+  { id: 'wa-028', category: 'general', text: 'What color is the sun?' },
   { id: 'wa-029', category: 'general', text: 'How many wheels does a car have?' },
   { id: 'wa-030', category: 'general', text: 'What do you sharpen a pencil with?' },
   { id: 'wa-031', category: 'general', text: 'What color is grass?' },
@@ -173,30 +175,30 @@ export const wrongAnswerEn: Question[] = [
   { id: 'wa-152', category: 'food', text: 'What is wine made from?' },
   { id: 'wa-153', category: 'general', text: 'Where does water come out of in the kitchen?' },
 
-  // Armenia — things every Armenian at the table knows without thinking.
-  { id: 'wa-154', category: 'armenia', text: 'Who brings the presents at New Year in Armenia?' },
-  { id: 'wa-155', category: 'armenia', text: 'What is the biggest lake in Armenia?' },
-  { id: 'wa-156', category: 'armenia', text: 'Does it snow in Armenia in winter?' },
-  { id: 'wa-157', category: 'armenia', text: 'What is the first letter of the Armenian alphabet?' },
-  { id: 'wa-158', category: 'armenia', text: 'What bread is baked in a tonir?' },
-  { id: 'wa-159', category: 'armenia', text: 'Is a duduk a musical instrument or food?' },
-  { id: 'wa-160', category: 'yerevan', text: 'What do you call someone who lives in Yerevan?' },
-  { id: 'wa-161', category: 'armenia', text: 'How many colors are on the Armenian flag?' },
-  { id: 'wa-162', category: 'armenia', text: 'In which season do Armenians eat khash?' },
-  { id: 'wa-163', category: 'armenia', text: 'What is Armenian money called?' },
+  // More everyday reflexes (the Armenian deck keeps its Armenia block under these ids).
+  { id: 'wa-154', category: 'general', text: 'What do you wear to sleep?' },
+  { id: 'wa-155', category: 'funny', text: 'Which is heavier, a feather or a rock?' },
+  { id: 'wa-156', category: 'general', text: 'How many days are in a weekend?' },
+  { id: 'wa-157', category: 'general', text: 'What is the first month of the year?' },
+  { id: 'wa-158', category: 'general', text: 'Where do you go to watch a movie?' },
+  { id: 'wa-159', category: 'general', text: 'Who flies a plane?' },
+  { id: 'wa-160', category: 'general', text: 'Who cuts your hair?' },
+  { id: 'wa-161', category: 'general', text: 'What is the opposite of left?' },
+  { id: 'wa-162', category: 'food', text: 'What color is chocolate?' },
+  { id: 'wa-163', category: 'general', text: 'What do you write with?' },
   { id: 'wa-164', category: 'general', text: 'Which animal has long ears and hops?' },
-  { id: 'wa-165', category: 'armenia', text: 'What is meat grilled on skewers called?' },
+  { id: 'wa-165', category: 'general', text: 'Who cooks in a restaurant?' },
   { id: 'wa-166', category: 'general', text: 'What do you say on someone’s birthday?' },
-  { id: 'wa-167', category: 'armenia', text: 'What do you wrap in grape leaves?' },
-  { id: 'wa-168', category: 'armenia', text: 'Is lavash thin or thick?' },
-  { id: 'wa-169', category: 'armenia', text: 'What do people pour on each other at Vardavar?' },
-  { id: 'wa-170', category: 'funny', text: 'Does Armenia have a sea?' },
+  { id: 'wa-167', category: 'funny', text: 'What color is an orange?' },
+  { id: 'wa-168', category: 'general', text: 'What is the opposite of fast?' },
+  { id: 'wa-169', category: 'general', text: 'What do you say when you leave?' },
+  { id: 'wa-170', category: 'general', text: 'Where do you borrow books?' },
   { id: 'wa-171', category: 'general', text: 'What do you do in a swimming pool?' },
-  { id: 'wa-172', category: 'armenia', text: 'What do you dye at Easter?' },
-  { id: 'wa-173', category: 'armenia', text: 'Which mountain is Armenia known for?' },
+  { id: 'wa-172', category: 'general', text: 'What animal says quack?' },
+  { id: 'wa-173', category: 'general', text: 'Where do you buy medicine?' },
   { id: 'wa-174', category: 'general', text: 'What do you hang on the wall to see the time?' },
   { id: 'wa-175', category: 'general', text: 'What do you clap with?' },
-  { id: 'wa-176', category: 'yerevan', text: 'What color city is Yerevan called?' },
+  { id: 'wa-176', category: 'general', text: 'What is the opposite of wet?' },
   { id: 'wa-177', category: 'general', text: 'What do you tie your shoes with?' },
 
   // Technology, household and transport.

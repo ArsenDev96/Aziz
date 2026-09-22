@@ -64,12 +64,8 @@ describe('question ids', () => {
     }
   });
 
-  it('paired questions share a category', () => {
-    const en = getQuestionMap('en');
-    for (const question of wrongAnswerHy) {
-      assert.equal(question.category, en[question.id].category, question.id);
-    }
-  });
+  // The decks are deliberately not translations of each other (Armenian is Armenia-first,
+  // English is international), so nothing here compares the meaning or category of a pair.
 });
 
 describe('question text', () => {
@@ -110,6 +106,12 @@ describe('question text', () => {
   it('English questions end with a question mark', () => {
     for (const question of wrongAnswerEn) {
       assert.ok(question.text.endsWith('?'), `${question.id} does not end with ?`);
+    }
+  });
+
+  it('English questions contain no Armenian or Cyrillic letters', () => {
+    for (const question of wrongAnswerEn) {
+      assert.doesNotMatch(question.text, /[԰-֏Ѐ-ӿ]/, `${question.id}: "${question.text}"`);
     }
   });
 });

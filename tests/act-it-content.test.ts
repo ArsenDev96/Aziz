@@ -59,10 +59,8 @@ describe('card ids', () => {
     for (const card of actItEn) assert.ok(hy[card.id], `no Armenian card for ${card.id}`);
   });
 
-  it('paired cards share a category', () => {
-    const en = getActItCardMap('en');
-    for (const card of actItHy) assert.equal(card.category, en[card.id].category, card.id);
-  });
+  // The decks are deliberately not translations of each other (Armenian is Armenia-first,
+  // English is international), so nothing here compares the meaning or category of a pair.
 });
 
 describe('card text', () => {

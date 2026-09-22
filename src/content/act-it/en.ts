@@ -4,7 +4,9 @@ import type { Card } from './types';
  * Act It! deck — 200 cards.
  * Rules for every card: one word (a two-word concept only when there is no single word), easy
  * to act with the body, easy to guess, nothing abstract, nothing that needs trivia.
- * Ids are shared with `hy.ts`; add a card to both files or to neither.
+ * Ids are shared with `hy.ts`; add a card to both files or to neither. The two decks are not
+ * translations: Armenian is Armenia-first, English must be recognisable and actable for
+ * players with no Armenian background, so the same id can carry a different concept.
  */
 export const actItEn: Card[] = [
   { id: 'ai-001', category: 'action', text: 'Sleeping' },
@@ -114,7 +116,7 @@ export const actItEn: Card[] = [
   { id: 'ai-105', category: 'people', text: 'Baby' },
   { id: 'ai-106', category: 'people', text: 'Grandma' },
   { id: 'ai-107', category: 'people', text: 'Model' },
-  { id: 'ai-108', category: 'people', text: 'Tamada' },
+  { id: 'ai-108', category: 'people', text: 'Detective' },
   { id: 'ai-109', category: 'people', text: 'Shepherd' },
   { id: 'ai-110', category: 'people', text: 'Goalkeeper' },
   { id: 'ai-111', category: 'people', text: 'Referee' },
@@ -163,26 +165,26 @@ export const actItEn: Card[] = [
   { id: 'ai-154', category: 'sport', text: 'Trampoline' },
   { id: 'ai-155', category: 'sport', text: 'Parachute' },
   { id: 'ai-156', category: 'sport', text: 'Skateboard' },
-  { id: 'ai-157', category: 'armenia', text: 'Lavash' },
-  { id: 'ai-158', category: 'armenia', text: 'Khorovats' },
-  { id: 'ai-159', category: 'armenia', text: 'Rug beating' },
-  { id: 'ai-160', category: 'armenia', text: 'Coffee' },
-  { id: 'ai-161', category: 'armenia', text: 'Duduk' },
-  { id: 'ai-162', category: 'armenia', text: 'Dhol' },
-  { id: 'ai-163', category: 'armenia', text: 'Kanon' },
-  { id: 'ai-164', category: 'armenia', text: 'Kochari' },
+  { id: 'ai-157', category: 'sport', text: 'Push-ups' },
+  { id: 'ai-158', category: 'sport', text: 'Hula hoop' },
+  { id: 'ai-159', category: 'action', text: 'Washing a car' },
+  { id: 'ai-160', category: 'action', text: 'Camping' },
+  { id: 'ai-161', category: 'object', text: 'Trumpet' },
+  { id: 'ai-162', category: 'object', text: 'Drums' },
+  { id: 'ai-163', category: 'action', text: 'Roller coaster' },
+  { id: 'ai-164', category: 'action', text: 'Pillow fight' },
   { id: 'ai-165', category: 'action', text: 'Snowball fight' },
-  { id: 'ai-166', category: 'armenia', text: 'Nardi' },
-  { id: 'ai-167', category: 'armenia', text: 'Khash' },
-  { id: 'ai-168', category: 'armenia', text: 'Sunflower seeds' },
-  { id: 'ai-169', category: 'armenia', text: 'Marshrutka' },
-  { id: 'ai-170', category: 'armenia', text: 'Vardavar' },
-  { id: 'ai-171', category: 'armenia', text: 'Trndez' },
-  { id: 'ai-172', category: 'armenia', text: 'Egg fight' },
-  { id: 'ai-173', category: 'armenia', text: 'Wedding' },
-  { id: 'ai-174', category: 'armenia', text: 'Birthday' },
-  { id: 'ai-175', category: 'armenia', text: 'New Year' },
-  { id: 'ai-176', category: 'armenia', text: 'Fortune telling' },
+  { id: 'ai-166', category: 'sport', text: 'Darts' },
+  { id: 'ai-167', category: 'object', text: 'Chopsticks' },
+  { id: 'ai-168', category: 'action', text: 'Painting a wall' },
+  { id: 'ai-169', category: 'object', text: 'Kite' },
+  { id: 'ai-170', category: 'sport', text: 'Hopscotch' },
+  { id: 'ai-171', category: 'object', text: 'Fireworks' },
+  { id: 'ai-172', category: 'action', text: 'Blowing bubbles' },
+  { id: 'ai-173', category: 'action', text: 'Wedding' },
+  { id: 'ai-174', category: 'action', text: 'Birthday' },
+  { id: 'ai-175', category: 'action', text: 'New Year' },
+  { id: 'ai-176', category: 'action', text: 'Fortune telling' },
   { id: 'ai-177', category: 'object', text: 'Umbrella' },
   { id: 'ai-178', category: 'object', text: 'Guitar' },
   { id: 'ai-179', category: 'object', text: 'Piano' },
@@ -205,6 +207,6 @@ export const actItEn: Card[] = [
   { id: 'ai-196', category: 'object', text: 'Spaghetti' },
   { id: 'ai-197', category: 'object', text: 'Lemon' },
   { id: 'ai-198', category: 'object', text: 'Chewing gum' },
-  { id: 'ai-199', category: 'object', text: 'Shawarma' },
+  { id: 'ai-199', category: 'object', text: 'Banana' },
   { id: 'ai-200', category: 'object', text: 'Traffic jam' },
 ];

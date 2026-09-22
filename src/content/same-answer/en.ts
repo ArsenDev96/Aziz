@@ -4,10 +4,12 @@ import type { Prompt } from './types';
  * Same Answer deck — 100 prompts.
  * Rules for every prompt: a handful of obvious answers (not one, not hundreds), no special
  * knowledge, nothing political or personal, nothing a table would argue about.
- * Ids are shared with `hy.ts`; add a prompt to both files or to neither.
+ * Ids are shared with `hy.ts`; add a prompt to both files or to neither. The two decks are not
+ * translations: Armenian is Armenia-first, English must work for players with no Armenian
+ * background, so the same id can carry a completely different prompt.
  */
 export const sameAnswerEn: Prompt[] = [
-  { id: 'sa-001', category: 'food', text: 'Name an Armenian food.' },
+  { id: 'sa-001', category: 'food', text: 'Name a food you eat with your hands.' },
   { id: 'sa-002', category: 'food', text: 'Name a fruit.' },
   { id: 'sa-003', category: 'food', text: 'Name a vegetable.' },
   { id: 'sa-004', category: 'food', text: 'Name something people eat for breakfast.' },
@@ -20,27 +22,27 @@ export const sameAnswerEn: Prompt[] = [
   { id: 'sa-011', category: 'food', text: 'Name something you spread on bread.' },
   { id: 'sa-012', category: 'food', text: 'Name something people put in tea.' },
   { id: 'sa-013', category: 'food', text: 'Name an ice cream flavor.' },
-  { id: 'sa-014', category: 'food', text: 'Name an Armenian sweet.' },
+  { id: 'sa-014', category: 'food', text: 'Name a type of cake.' },
   { id: 'sa-015', category: 'food', text: 'Name a soup.' },
   { id: 'sa-016', category: 'food', text: 'Name a summer fruit.' },
   { id: 'sa-017', category: 'food', text: 'Name a juice.' },
   { id: 'sa-018', category: 'food', text: 'Name something you grill.' },
-  { id: 'sa-019', category: 'armenia', text: 'Name an Armenian city.' },
-  { id: 'sa-020', category: 'armenia', text: 'Name an Armenian singer.' },
-  { id: 'sa-021', category: 'food', text: 'Name something on the New Year table.' },
-  { id: 'sa-022', category: 'armenia', text: 'Name a place in Yerevan.' },
-  { id: 'sa-023', category: 'armenia', text: 'Name an Armenian holiday.' },
+  { id: 'sa-019', category: 'places', text: 'Name a famous city.' },
+  { id: 'sa-020', category: 'entertainment', text: 'Name a famous singer.' },
+  { id: 'sa-021', category: 'social', text: 'Name something people do before bed.' },
+  { id: 'sa-022', category: 'travel', text: 'Name a country people visit on vacation.' },
+  { id: 'sa-023', category: 'social', text: 'Name a holiday.' },
   { id: 'sa-024', category: 'everyday', text: 'Name a flower.' },
   { id: 'sa-025', category: 'entertainment', text: 'Name a toy.' },
-  { id: 'sa-026', category: 'armenia', text: 'Name an Armenian dance.' },
+  { id: 'sa-026', category: 'entertainment', text: 'Name a dance.' },
   { id: 'sa-027', category: 'food', text: 'Name something you buy at a bakery.' },
   { id: 'sa-028', category: 'objects', text: 'Name something found in an office.' },
-  { id: 'sa-029', category: 'armenia', text: 'Name an Armenian brand.' },
+  { id: 'sa-029', category: 'everyday', text: 'Name a clothing brand.' },
   { id: 'sa-030', category: 'social', text: 'Name something people are afraid of.' },
-  { id: 'sa-031', category: 'armenia', text: 'Name an Armenian monastery.' },
+  { id: 'sa-031', category: 'places', text: 'Name a famous landmark.' },
   { id: 'sa-032', category: 'everyday', text: 'Name a household chore.' },
   { id: 'sa-033', category: 'animals', text: 'Name an animal people keep at home.' },
-  { id: 'sa-034', category: 'animals', text: 'Name an animal people keep in a village.' },
+  { id: 'sa-034', category: 'animals', text: 'Name a farm animal.' },
   { id: 'sa-035', category: 'animals', text: 'Name a wild animal.' },
   { id: 'sa-036', category: 'animals', text: 'Name a bird.' },
   { id: 'sa-037', category: 'animals', text: 'Name an animal that lives in the sea.' },
@@ -83,7 +85,7 @@ export const sameAnswerEn: Prompt[] = [
   { id: 'sa-074', category: 'travel', text: 'Name something you pack in a suitcase.' },
   { id: 'sa-075', category: 'travel', text: 'Name a kind of transport.' },
   { id: 'sa-076', category: 'travel', text: 'Name something found at an airport.' },
-  { id: 'sa-077', category: 'travel', text: 'Name a place in Armenia people go to relax.' },
+  { id: 'sa-077', category: 'travel', text: 'Name something people do on vacation.' },
   { id: 'sa-078', category: 'places', text: 'Name a language.' },
   { id: 'sa-079', category: 'places', text: 'Name a continent.' },
   { id: 'sa-080', category: 'places', text: 'Name a place that is always crowded.' },

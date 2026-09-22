@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+#releases
+release/aab/
+
 # Expo
 .expo/
 dist/

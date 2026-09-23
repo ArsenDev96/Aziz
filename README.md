@@ -3,7 +3,7 @@
 Armenian party games for one phone and a table full of people. Offline, no account, no backend.
 
 **Status: Phase 4 — first playable prototype.** Three game modes — Wrong Answer Only (200 questions),
-Same Answer (100 team prompts) and Act It! (200 charades cards) — in Armenian and English, deliberately unpolished. The next step is [a real
+Same Answer (200 team prompts) and Act It! (200 charades cards) — in Armenian and English, deliberately unpolished. The next step is [a real
 playtest](docs/PLAYTEST.md), not more features.
 
 ## Run it

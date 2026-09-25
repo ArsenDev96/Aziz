@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     textAlign: 'center',
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
   },
   body: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },

@@ -67,6 +67,7 @@ export const Countdown = ({ durationMs, onDone, color = colors.accent }: Props) 
 
 const styles = StyleSheet.create({
   digit: {
+    fontFamily: font.family,
     fontSize: font.countdown,
     lineHeight: font.countdown * 1.1,
     fontWeight: '900',

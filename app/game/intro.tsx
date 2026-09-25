@@ -54,6 +54,7 @@ export default function GameIntroScreen() {
 const styles = StyleSheet.create({
   kicker: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     textAlign: 'center',
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
     textAlign: 'center',
@@ -80,12 +82,14 @@ const styles = StyleSheet.create({
   },
   ruleNumber: {
     color: colors.primary,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '900',
   },
   ruleText: {
     flex: 1,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   cta: {

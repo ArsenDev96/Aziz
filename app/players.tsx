@@ -134,11 +134,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     color: colors.text,
   },
   subtitle: {
+    fontFamily: font.family,
     fontSize: font.label,
     color: colors.textMuted,
     marginTop: spacing(0.5),
@@ -157,6 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(2),
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   addButton: {
@@ -164,6 +167,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.fail,
+    fontFamily: font.family,
     fontSize: font.label,
     marginTop: spacing(1),
   },
@@ -182,12 +186,14 @@ const styles = StyleSheet.create({
   },
   playerIndex: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     width: spacing(3),
   },
   playerName: {
     flex: 1,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -196,6 +202,7 @@ const styles = StyleSheet.create({
   },
   removeLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   timer: {

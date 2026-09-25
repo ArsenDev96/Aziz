@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   tagline: {
+    fontFamily: font.family,
     fontSize: font.body,
     color: colors.textMuted,
     textAlign: 'center',
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
   },
   pickMode: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
@@ -148,11 +150,13 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }],
   },
   cardName: {
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '900',
     letterSpacing: 0.5,
   },
   cardTagline: {
+    fontFamily: font.family,
     fontSize: font.label,
     opacity: 0.85,
   },
@@ -168,6 +172,7 @@ const styles = StyleSheet.create({
   },
   settingsLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
 });

@@ -125,12 +125,14 @@ const styles = StyleSheet.create({
   },
   progress: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
   },
   quit: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   body: {
@@ -141,17 +143,20 @@ const styles = StyleSheet.create({
   },
   suddenDeath: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.label,
     textAlign: 'center',
   },
   playerName: {
     color: colors.primary,
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
     textAlign: 'center',
   },
   turnHeading: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },
@@ -161,23 +166,27 @@ const styles = StyleSheet.create({
   },
   hint: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
   },
   question: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.question,
     fontWeight: '800',
     textAlign: 'center',
   },
   questionSmall: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },
   judgeHeading: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '800',
     textAlign: 'center',

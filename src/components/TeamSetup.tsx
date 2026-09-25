@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
   },
   teamCountLabel: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -244,6 +245,7 @@ const styles = StyleSheet.create({
   },
   countChipLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },
@@ -268,6 +270,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexShrink: 1,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -290,6 +293,7 @@ const styles = StyleSheet.create({
   },
   teamChipLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
   },
@@ -305,6 +309,7 @@ const styles = StyleSheet.create({
   },
   removeLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
   summary: {
@@ -325,11 +330,13 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   summaryName: {
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
   },
   summaryCount: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
 });

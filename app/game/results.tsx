@@ -73,6 +73,7 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   title: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 2,
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
   },
   winner: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     textAlign: 'center',
@@ -104,17 +106,20 @@ const styles = StyleSheet.create({
   },
   medal: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     width: spacing(4),
   },
   name: {
     flex: 1,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
   score: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },

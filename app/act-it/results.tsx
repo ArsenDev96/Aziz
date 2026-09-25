@@ -84,6 +84,7 @@ export default function ActItResultsScreen() {
 const styles = StyleSheet.create({
   title: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 2,
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   },
   winner: {
     color: colors.pass,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     textAlign: 'center',
@@ -116,6 +118,7 @@ const styles = StyleSheet.create({
   medal: {
     // Fourth place has no medal emoji, only "4." — it needs an explicit color on the dark bg.
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     width: spacing(4),
   },
@@ -124,15 +127,18 @@ const styles = StyleSheet.create({
     gap: spacing(0.25),
   },
   name: {
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '900',
   },
   members: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
   score: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '900',
   },

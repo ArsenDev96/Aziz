@@ -41,6 +41,32 @@
           "resizeMode": "contain",
           "imageWidth": 220
         }
+      ],
+      [
+        "expo-font",
+        {
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Noto Sans Armenian",
+                "fontDefinitions": [
+                  { "path": "./assets/fonts/NotoSansArmenian_400Regular.ttf", "weight": 400 },
+                  { "path": "./assets/fonts/NotoSansArmenian_700Bold.ttf", "weight": 700 },
+                  { "path": "./assets/fonts/NotoSansArmenian_800ExtraBold.ttf", "weight": 800 },
+                  { "path": "./assets/fonts/NotoSansArmenian_900Black.ttf", "weight": 900 }
+                ]
+              }
+            ]
+          },
+          "ios": {
+            "fonts": [
+              "./assets/fonts/NotoSansArmenian_400Regular.ttf",
+              "./assets/fonts/NotoSansArmenian_700Bold.ttf",
+              "./assets/fonts/NotoSansArmenian_800ExtraBold.ttf",
+              "./assets/fonts/NotoSansArmenian_900Black.ttf"
+            ]
+          }
+        }
       ]
     ],
     "experiments": {

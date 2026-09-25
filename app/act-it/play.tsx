@@ -231,12 +231,14 @@ const styles = StyleSheet.create({
   },
   progress: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
   },
   quit: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   body: {
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
   },
   roundLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
@@ -261,18 +264,21 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   teamBadgeLabel: {
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   guesserName: {
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
     textAlign: 'center',
   },
   actors: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
     textAlign: 'center',
@@ -284,6 +290,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },
@@ -298,6 +305,7 @@ const styles = StyleSheet.create({
   },
   go: {
     color: colors.onAccent,
+    fontFamily: font.family,
     fontSize: font.countdown * 0.8,
     lineHeight: font.countdown * 0.9,
     fontWeight: '900',
@@ -310,6 +318,7 @@ const styles = StyleSheet.create({
   },
   status: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },
@@ -328,12 +337,14 @@ const styles = StyleSheet.create({
   word: {
     // Black on white, as big as the panel allows: this is read from across the table.
     color: colors.bg,
+    fontFamily: font.family,
     fontSize: font.countdown * 0.5,
     fontWeight: '900',
     textAlign: 'center',
   },
   actorHint: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     textAlign: 'center',
   },
@@ -345,6 +356,7 @@ const styles = StyleSheet.create({
   },
   timeUp: {
     color: colors.primary,
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
     textAlign: 'center',
@@ -352,11 +364,13 @@ const styles = StyleSheet.create({
   },
   gotScore: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '800',
     textAlign: 'center',
   },
   teamTotal: {
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
     textAlign: 'center',

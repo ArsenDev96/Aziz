@@ -162,17 +162,20 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: colors.pass,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
     marginBottom: spacing(0.5),
   },
   title: {
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     color: colors.text,
   },
   subtitle: {
+    fontFamily: font.family,
     fontSize: font.label,
     color: colors.textMuted,
     marginTop: spacing(0.5),
@@ -191,6 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1.5),
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   addButton: {
@@ -199,6 +203,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.fail,
+    fontFamily: font.family,
     fontSize: font.label,
     marginBottom: spacing(1),
   },

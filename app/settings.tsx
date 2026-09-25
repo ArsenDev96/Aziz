@@ -95,6 +95,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
   },
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -134,10 +136,12 @@ const styles = StyleSheet.create({
   },
   linkGlyph: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   version: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     textAlign: 'center',
     marginBottom: spacing(1),
@@ -148,6 +152,7 @@ const styles = StyleSheet.create({
   },
   backLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },

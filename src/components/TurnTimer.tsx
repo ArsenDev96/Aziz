@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   digits: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     fontVariant: ['tabular-nums'],

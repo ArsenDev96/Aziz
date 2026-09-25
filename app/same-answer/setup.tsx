@@ -285,17 +285,20 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
     marginBottom: spacing(0.5),
   },
   title: {
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     color: colors.text,
   },
   subtitle: {
+    fontFamily: font.family,
     fontSize: font.label,
     color: colors.textMuted,
     marginTop: spacing(0.5),
@@ -313,6 +316,7 @@ const styles = StyleSheet.create({
   },
   teamCountLabel: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -335,6 +339,7 @@ const styles = StyleSheet.create({
   },
   countChipLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },
@@ -355,6 +360,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1.5),
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   addButton: {
@@ -379,6 +385,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexShrink: 1,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
   },
@@ -401,6 +408,7 @@ const styles = StyleSheet.create({
   },
   teamChipLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
   },
@@ -416,6 +424,7 @@ const styles = StyleSheet.create({
   },
   removeLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
   summary: {
@@ -436,15 +445,18 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   summaryName: {
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
   },
   summaryCount: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
   },
   error: {
     color: colors.fail,
+    fontFamily: font.family,
     fontSize: font.label,
     marginBottom: spacing(1),
   },

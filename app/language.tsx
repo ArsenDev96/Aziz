@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   },
   promptLine: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
     textAlign: 'center',
@@ -86,6 +87,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.verdict,
     fontWeight: '900',
   },

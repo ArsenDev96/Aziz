@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },

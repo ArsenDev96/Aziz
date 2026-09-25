@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexShrink: 0,
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
   },
   chipLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },

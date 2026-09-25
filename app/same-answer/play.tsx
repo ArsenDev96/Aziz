@@ -207,12 +207,14 @@ const styles = StyleSheet.create({
   },
   progress: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
   },
   quit: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
   },
   body: {
@@ -223,11 +225,13 @@ const styles = StyleSheet.create({
   },
   roundLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     letterSpacing: 1,
   },
   teamTitle: {
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
     textAlign: 'center',
@@ -235,12 +239,14 @@ const styles = StyleSheet.create({
   },
   teamMembers: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '700',
     textAlign: 'center',
   },
   teamUp: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },
@@ -259,11 +265,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(1.5),
   },
   scoreChipTeam: {
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
   },
   scoreChipScore: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
   },
@@ -277,29 +285,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2),
   },
   teamBadgeLabel: {
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '900',
     letterSpacing: 1,
   },
   prompt: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.question,
     fontWeight: '800',
     textAlign: 'center',
   },
   promptSmall: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },
   hint: {
     color: colors.accent,
+    fontFamily: font.family,
     fontSize: font.label,
     fontWeight: '700',
     textAlign: 'center',
   },
   revealHint: {
     color: colors.primary,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '900',
     textAlign: 'center',
@@ -310,6 +323,7 @@ const styles = StyleSheet.create({
     marginVertical: spacing(2),
   },
   sayIt: {
+    fontFamily: font.family,
     fontSize: font.display * 1.5,
     lineHeight: font.display * 1.7,
     fontWeight: '900',
@@ -318,12 +332,14 @@ const styles = StyleSheet.create({
   },
   matchHeading: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '800',
     textAlign: 'center',
   },
   matchHint: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.label,
     textAlign: 'center',
   },
@@ -347,17 +363,20 @@ const styles = StyleSheet.create({
   },
   matchChoiceLabel: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.display,
     fontWeight: '900',
   },
   scoreMatched: {
     color: colors.text,
+    fontFamily: font.family,
     fontSize: font.title,
     fontWeight: '800',
     textAlign: 'center',
   },
   scorePoints: {
     color: colors.pass,
+    fontFamily: font.family,
     fontSize: font.countdown * 0.7,
     lineHeight: font.countdown * 0.75,
     fontWeight: '900',
@@ -368,6 +387,7 @@ const styles = StyleSheet.create({
   },
   scoreTotal: {
     color: colors.textMuted,
+    fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
   },

@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     opacity: 0.35,
   },
   label: {
+    fontFamily: font.family,
     fontSize: font.body,
     fontWeight: '800',
     letterSpacing: 0.5,
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
   },
   hugeLabel: {
     // Sized so the longest Armenian verdict still fits on one line at 360dp.
+    fontFamily: font.family,
     fontSize: font.verdict,
     letterSpacing: 0,
   },

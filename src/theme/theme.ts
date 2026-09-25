@@ -38,6 +38,12 @@ export const radius = {
 } as const;
 
 export const font = {
+  /**
+   * Bundled at build time (expo-font plugin in app.json), so a phone's custom system font can't
+   * swap in different metrics and clip wrapped text. Covers Latin and Armenian; set it on every
+   * text style next to fontSize. fontWeight still picks the 400/700/800/900 file.
+   */
+  family: 'Noto Sans Armenian',
   display: 44,
   title: 32,
   question: 34,

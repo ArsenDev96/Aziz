@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { useFeedback } from '@/lib/feedback';
+import { useScrollToNew } from '@/lib/scroll-to-new';
 import { format, subjectName } from '@/locales';
 import type { TeamAssignments } from '@/lib/teams';
 import { useSettings } from '@/state/settings';
@@ -19,6 +20,7 @@ export interface TeamSetupCopy {
   team: string;
   teamChipA11y: string;
   sitOutA11y: string;
+  teamSummaryOne: string;
   teamSummary: string;
 }
 
@@ -65,6 +67,7 @@ export const TeamSetup = ({
 }: TeamSetupProps) => {
   const feedback = useFeedback();
   const { settings } = useSettings();
+  const scrollToNew = useScrollToNew(players.length);
 
   return (
     <>
@@ -99,6 +102,7 @@ export const TeamSetup = ({
       {children}
 
       <ScrollView
+        {...scrollToNew}
         style={styles.flex}
         contentContainerStyle={styles.list}
         keyboardShouldPersistTaps="handled"
@@ -195,7 +199,9 @@ export const TeamSetup = ({
                 adjustsFontSizeToFit
                 minimumFontScale={0.8}
               >
-                {format(copy.teamSummary, { count: members.length })}
+                {format(members.length === 1 ? copy.teamSummaryOne : copy.teamSummary, {
+                  count: members.length,
+                })}
               </Text>
             </View>
           );

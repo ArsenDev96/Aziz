@@ -15,6 +15,7 @@ import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
+import { useScrollToNew } from '@/lib/scroll-to-new';
 import { format, subjectName, type Strings } from '@/locales';
 import type { Player, SetupError } from '@/modes/same-answer/engine';
 import { SAME_ANSWER_RULES } from '@/modes/same-answer/rules';
@@ -57,6 +58,7 @@ export default function SameAnswerSetupScreen() {
     useSameAnswer();
   const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const scrollToNew = useScrollToNew(players.length);
   const copy = strings.sameAnswer;
 
   const submit = () => {
@@ -166,6 +168,7 @@ export default function SameAnswerSetupScreen() {
         </View>
 
         <ScrollView
+          {...scrollToNew}
           style={styles.flex}
           contentContainerStyle={styles.list}
           keyboardShouldPersistTaps="handled"
@@ -264,7 +267,9 @@ export default function SameAnswerSetupScreen() {
                   adjustsFontSizeToFit
                   minimumFontScale={0.8}
                 >
-                  {format(copy.teamSummary, { count: members.length })}
+                  {format(members.length === 1 ? copy.teamSummaryOne : copy.teamSummary, {
+                    count: members.length,
+                  })}
                 </Text>
               </View>
             );

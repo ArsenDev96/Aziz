@@ -66,6 +66,7 @@ export const hy: Strings = {
     sitOut: 'Դուրս',
     // {name} arrives with its definite article already attached (see locales/armenian.ts).
     sitOutA11y: '{name} չի խաղում',
+    teamSummaryOne: '{count} հոգի',
     teamSummary: '{count} հոգի',
     errorTooFewPlayers: 'Ընտրիր առնվազն {min} խաղացող',
     errorTooManyPlayers: 'Առավելագույնը {max} խաղացող',
@@ -102,6 +103,7 @@ export const hy: Strings = {
     teamChipA11y: '{name}-ին դնել {number}-րդ թիմում',
     // {name} arrives with its definite article already attached (see locales/armenian.ts).
     sitOutA11y: '{name} չի խաղում',
+    teamSummaryOne: '{count} հոգի',
     teamSummary: '{count} հոգի',
     errorTooFewPlayers: 'Ընտրիր առնվազն {min} խաղացող',
     errorTooManyPlayers: 'Առավելագույնը {max} խաղացող',

@@ -89,6 +89,7 @@ export const en = {
     scoreTotal: '{team} now has {score}',
     next: 'NEXT',
     scoreboard: 'Scores',
+    scoreChipA11y: '{team}: {score} pts',
   },
   actIt: {
     setupTitle: 'Make the teams',

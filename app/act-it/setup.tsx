@@ -98,19 +98,22 @@ export default function ActItSetupScreen() {
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <Text style={styles.kicker}>{strings.modes.actIt.name}</Text>
-        <Text style={styles.title}>{copy.setupTitle}</Text>
-        <Text style={styles.subtitle}>
-          {format(copy.setupSubtitle, {
-            minPlayers: ACT_IT_RULES.minPlayers,
-            maxPlayers: ACT_IT_RULES.maxPlayers,
-            minTeams: ACT_IT_RULES.minTeams,
-            maxTeams: ACT_IT_RULES.maxTeams,
-            minPerTeam: ACT_IT_RULES.minPlayersPerTeam,
-          })}
-        </Text>
-
         <TeamSetup
+          header={
+            <>
+              <Text style={styles.kicker}>{strings.modes.actIt.name}</Text>
+              <Text style={styles.title}>{copy.setupTitle}</Text>
+              <Text style={styles.subtitle}>
+                {format(copy.setupSubtitle, {
+                  minPlayers: ACT_IT_RULES.minPlayers,
+                  maxPlayers: ACT_IT_RULES.maxPlayers,
+                  minTeams: ACT_IT_RULES.minTeams,
+                  maxTeams: ACT_IT_RULES.maxTeams,
+                  minPerTeam: ACT_IT_RULES.minPlayersPerTeam,
+                })}
+              </Text>
+            </>
+          }
           players={players}
           teamCounts={TEAM_COUNTS}
           teamCount={teamCount}

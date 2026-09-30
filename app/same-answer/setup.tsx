@@ -104,142 +104,152 @@ export default function SameAnswerSetupScreen() {
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <Text style={styles.kicker}>{strings.modes.sameAnswer.name}</Text>
-        <Text style={styles.title}>{copy.setupTitle}</Text>
-        <Text style={styles.subtitle}>
-          {format(copy.setupSubtitle, {
-            minPlayers: SAME_ANSWER_RULES.minPlayers,
-            maxPlayers: SAME_ANSWER_RULES.maxPlayers,
-            minTeams: SAME_ANSWER_RULES.minTeams,
-            maxTeams: SAME_ANSWER_RULES.maxTeams,
-            minPerTeam: SAME_ANSWER_RULES.minPlayersPerTeam,
-          })}
-        </Text>
-
-        <View style={styles.teamCountRow} accessibilityRole="radiogroup">
-          <Text style={styles.teamCountLabel}>{copy.teamCount}</Text>
-          <View style={styles.teamCountOptions}>
-            {TEAM_COUNTS.map((count) => {
-              const selected = count === teamCount;
-              return (
-                <Pressable
-                  key={count}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected, checked: selected }}
-                  accessibilityLabel={format(copy.teamCountA11y, { count })}
-                  onPress={() => {
-                    if (selected) return;
-                    feedback.tap();
-                    setTeamCount(count);
-                    setError(null);
-                  }}
-                  style={[styles.countChip, selected && styles.countChipSelected]}
-                >
-                  <Text style={[styles.countChipLabel, selected && styles.countChipLabelSelected]}>
-                    {count}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-
-        <View style={styles.inputRow}>
-          <TextInput
-            value={name}
-            onChangeText={(value) => {
-              setName(value);
-              setError(null);
-            }}
-            placeholder={strings.players.placeholder}
-            placeholderTextColor={colors.textMuted}
-            style={styles.input}
-            returnKeyType="done"
-            maxLength={16}
-            autoCorrect={false}
-            onSubmitEditing={submit}
-          />
-          <AzizButton
-            label={strings.players.add}
-            variant="accent"
-            onPress={submit}
-            style={styles.addButton}
-          />
-        </View>
-
+        {/* Everything above the team cards scrolls as one. When the roster was the only flexible
+            part, short phones squeezed it below one row and the cards cut the last row in half. */}
         <ScrollView
           {...scrollToNew}
           style={styles.flex}
-          contentContainerStyle={styles.list}
           keyboardShouldPersistTaps="handled"
+          // The name field stays on screen while the roster scrolls under it.
+          stickyHeaderIndices={[1]}
         >
-          {players.map((player) => {
-            const assigned = assignments[player.id];
-            const current = assigned !== undefined && assigned < teamCount ? assigned : null;
-            return (
-              <Animated.View
-                key={player.id}
-                entering={FadeIn.duration(200)}
-                layout={LinearTransition.duration(200)}
-                style={styles.playerRow}
-              >
-                {/* Removal sits on the far side from the chips, which shift as the team count
-                    changes, and always asks first — one stray tap must never lose a name. */}
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={format(strings.players.remove, { name: player.name })}
-                  onPress={() => confirmRemove(player)}
-                  hitSlop={6}
-                  style={styles.remove}
+          <View>
+            <Text style={styles.kicker}>{strings.modes.sameAnswer.name}</Text>
+            <Text style={styles.title}>{copy.setupTitle}</Text>
+            <Text style={styles.subtitle}>
+              {format(copy.setupSubtitle, {
+                minPlayers: SAME_ANSWER_RULES.minPlayers,
+                maxPlayers: SAME_ANSWER_RULES.maxPlayers,
+                minTeams: SAME_ANSWER_RULES.minTeams,
+                maxTeams: SAME_ANSWER_RULES.maxTeams,
+                minPerTeam: SAME_ANSWER_RULES.minPlayersPerTeam,
+              })}
+            </Text>
+
+            <View style={styles.teamCountRow} accessibilityRole="radiogroup">
+              <Text style={styles.teamCountLabel}>{copy.teamCount}</Text>
+              <View style={styles.teamCountOptions}>
+                {TEAM_COUNTS.map((count) => {
+                  const selected = count === teamCount;
+                  return (
+                    <Pressable
+                      key={count}
+                      accessibilityRole="radio"
+                      accessibilityState={{ selected, checked: selected }}
+                      accessibilityLabel={format(copy.teamCountA11y, { count })}
+                      onPress={() => {
+                        if (selected) return;
+                        feedback.tap();
+                        setTeamCount(count);
+                        setError(null);
+                      }}
+                      style={[styles.countChip, selected && styles.countChipSelected]}
+                    >
+                      <Text style={[styles.countChipLabel, selected && styles.countChipLabelSelected]}>
+                        {count}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+          </View>
+
+          {/* The sticky header takes over its child's style, so the row lives one level down. */}
+          <View style={styles.inputBar}>
+            <View style={styles.inputRow}>
+              <TextInput
+                value={name}
+                onChangeText={(value) => {
+                  setName(value);
+                  setError(null);
+                }}
+                placeholder={strings.players.placeholder}
+                placeholderTextColor={colors.textMuted}
+                style={styles.input}
+                returnKeyType="done"
+                maxLength={16}
+                autoCorrect={false}
+                onSubmitEditing={submit}
+              />
+              <AzizButton
+                label={strings.players.add}
+                variant="accent"
+                onPress={submit}
+                style={styles.addButton}
+              />
+            </View>
+          </View>
+
+          <View style={styles.list}>
+            {players.map((player) => {
+              const assigned = assignments[player.id];
+              const current = assigned !== undefined && assigned < teamCount ? assigned : null;
+              return (
+                <Animated.View
+                  key={player.id}
+                  entering={FadeIn.duration(200)}
+                  layout={LinearTransition.duration(200)}
+                  style={styles.playerRow}
                 >
-                  <Text style={styles.removeLabel}>✕</Text>
-                </Pressable>
-                <Text
-                  style={[styles.playerName, current === null && styles.playerNameOut]}
-                  numberOfLines={1}
-                >
-                  {player.name}
-                </Text>
-                <View style={styles.teamChips}>
-                  {Array.from({ length: teamCount }, (_, teamIndex) => {
-                    const selected = current === teamIndex;
-                    const palette = teamColor(teamIndex);
-                    return (
-                      <Pressable
-                        key={teamIndex}
-                        accessibilityRole="button"
-                        accessibilityState={{ selected }}
-                        accessibilityLabel={
-                          selected
-                            ? format(copy.sitOutA11y, {
-                                name: subjectName(settings.language, player.name),
-                              })
-                            : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
-                        }
-                        onPress={() => {
-                          feedback.tap();
-                          // Tapping the team you are already on takes you out of the game.
-                          assign(player.id, selected ? null : teamIndex);
-                          setError(null);
-                        }}
-                        hitSlop={4}
-                        style={[
-                          styles.teamChip,
-                          selected && { backgroundColor: palette.bg, borderColor: palette.bg },
-                        ]}
-                      >
-                        <Text
-                          style={[styles.teamChipLabel, selected && { color: palette.fg }]}
+                  {/* Removal sits on the far side from the chips, which shift as the team count
+                      changes, and always asks first — one stray tap must never lose a name. */}
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={format(strings.players.remove, { name: player.name })}
+                    onPress={() => confirmRemove(player)}
+                    hitSlop={6}
+                    style={styles.remove}
+                  >
+                    <Text style={styles.removeLabel}>✕</Text>
+                  </Pressable>
+                  <Text
+                    style={[styles.playerName, current === null && styles.playerNameOut]}
+                    numberOfLines={1}
+                  >
+                    {player.name}
+                  </Text>
+                  <View style={styles.teamChips}>
+                    {Array.from({ length: teamCount }, (_, teamIndex) => {
+                      const selected = current === teamIndex;
+                      const palette = teamColor(teamIndex);
+                      return (
+                        <Pressable
+                          key={teamIndex}
+                          accessibilityRole="button"
+                          accessibilityState={{ selected }}
+                          accessibilityLabel={
+                            selected
+                              ? format(copy.sitOutA11y, {
+                                  name: subjectName(settings.language, player.name),
+                                })
+                              : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
+                          }
+                          onPress={() => {
+                            feedback.tap();
+                            // Tapping the team you are already on takes you out of the game.
+                            assign(player.id, selected ? null : teamIndex);
+                            setError(null);
+                          }}
+                          hitSlop={4}
+                          style={[
+                            styles.teamChip,
+                            selected && { backgroundColor: palette.bg, borderColor: palette.bg },
+                          ]}
                         >
-                          {teamIndex + 1}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </View>
-              </Animated.View>
-            );
-          })}
+                          <Text
+                            style={[styles.teamChipLabel, selected && { color: palette.fg }]}
+                          >
+                            {teamIndex + 1}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+                </Animated.View>
+              );
+            })}
+          </View>
         </ScrollView>
 
         <View style={styles.summary}>
@@ -351,10 +361,14 @@ const styles = StyleSheet.create({
   countChipLabelSelected: {
     color: colors.onPrimary,
   },
+  inputBar: {
+    // Padding, not margin, and an opaque background: rows scroll under it while it is pinned.
+    paddingTop: spacing(1.5),
+    backgroundColor: colors.bg,
+  },
   inputRow: {
     flexDirection: 'row',
     gap: spacing(1),
-    marginTop: spacing(1.5),
   },
   input: {
     flex: 1,
@@ -435,6 +449,8 @@ const styles = StyleSheet.create({
   summary: {
     flexDirection: 'row',
     gap: spacing(0.75),
+    // A clear gap under the scroll edge, so a row cut by scrolling never reads as covered.
+    marginTop: spacing(1),
     marginBottom: spacing(1.5),
   },
   summaryCard: {

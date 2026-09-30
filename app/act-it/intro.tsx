@@ -1,5 +1,5 @@
 import { Redirect, router } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
 import { Screen } from '@/components/Screen';
@@ -26,35 +26,43 @@ export default function ActItIntroScreen() {
   ];
 
   return (
-    <Screen center>
-      <Animated.View entering={FadeInDown.duration(350)}>
-        <Text style={styles.kicker}>{mode.tagline}</Text>
-        <Text style={styles.title}>{mode.name}</Text>
+    <Screen>
+      {/* Centered while it fits; on short phones (five rules, and Armenian wraps them) it scrolls
+          from the top instead of overflowing both edges with START pushed off-screen. */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Animated.View entering={FadeInDown.duration(350)}>
+          <Text style={styles.kicker}>{mode.tagline}</Text>
+          <Text style={styles.title}>{mode.name}</Text>
 
-        <View style={styles.rules}>
-          {rules.map((rule, index) => (
-            <View key={rule} style={styles.ruleRow}>
-              <Text style={styles.ruleNumber}>{index + 1}</Text>
-              <Text style={styles.ruleText}>{rule}</Text>
-            </View>
-          ))}
-        </View>
+          <View style={styles.rules}>
+            {rules.map((rule, index) => (
+              <View key={rule} style={styles.ruleRow}>
+                <Text style={styles.ruleNumber}>{index + 1}</Text>
+                <Text style={styles.ruleText}>{rule}</Text>
+              </View>
+            ))}
+          </View>
 
-        <AzizButton
-          label={mode.start}
-          variant="pass"
-          onPress={() => {
-            startGame();
-            router.replace('/act-it/play');
-          }}
-          style={styles.cta}
-        />
-      </Animated.View>
+          <AzizButton
+            label={mode.start}
+            variant="pass"
+            onPress={() => {
+              startGame();
+              router.replace('/act-it/play');
+            }}
+            style={styles.cta}
+          />
+        </Animated.View>
+      </ScrollView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   kicker: {
     color: colors.pass,
     fontFamily: font.family,

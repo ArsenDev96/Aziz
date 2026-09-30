@@ -40,7 +40,10 @@ interface TeamSetupProps {
   copy: TeamSetupCopy;
   /** Accessibility label for the ✕ control, with `{name}`. */
   removeA11y: string;
-  /** Rendered between the team count and the roster — the "add a name" row. */
+  /** The screen's title block. It scrolls away with the roster, so short phones keep room for rows. */
+  header?: ReactNode;
+  /** Rendered between the team count and the roster — the "add a name" row. It stays pinned while
+      the roster scrolls under it. */
   children?: ReactNode;
   /** Called on any tap so the screen can clear a stale error message. */
   onInteract?: () => void;
@@ -62,6 +65,7 @@ export const TeamSetup = ({
   minPerTeam,
   copy,
   removeA11y,
+  header,
   children,
   onInteract,
 }: TeamSetupProps) => {
@@ -71,107 +75,115 @@ export const TeamSetup = ({
 
   return (
     <>
-      <View style={styles.teamCountRow} accessibilityRole="radiogroup">
-        <Text style={styles.teamCountLabel}>{copy.teamCount}</Text>
-        <View style={styles.teamCountOptions}>
-          {teamCounts.map((count) => {
-            const selected = count === teamCount;
-            return (
-              <Pressable
-                key={count}
-                accessibilityRole="radio"
-                accessibilityState={{ selected, checked: selected }}
-                accessibilityLabel={format(copy.teamCountA11y, { count })}
-                onPress={() => {
-                  if (selected) return;
-                  feedback.tap();
-                  onTeamCount(count);
-                  onInteract?.();
-                }}
-                style={[styles.countChip, selected && styles.countChipSelected]}
-              >
-                <Text style={[styles.countChipLabel, selected && styles.countChipLabelSelected]}>
-                  {count}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-      </View>
-
-      {children}
-
+      {/* Everything above the team cards scrolls as one. When the roster was the only flexible
+          part, short phones squeezed it below one row and the cards cut the last row in half. */}
       <ScrollView
         {...scrollToNew}
         style={styles.flex}
-        contentContainerStyle={styles.list}
         keyboardShouldPersistTaps="handled"
+        stickyHeaderIndices={children ? [1] : undefined}
       >
-        {players.map((player) => {
-          const assigned = assignments[player.id];
-          const current = assigned !== undefined && assigned < teamCount ? assigned : null;
-          return (
-            <Animated.View
-              key={player.id}
-              entering={FadeIn.duration(200)}
-              layout={LinearTransition.duration(200)}
-              style={styles.playerRow}
-            >
-              {/* Removal sits on the far side from the chips, which shift as the team count
-                  changes, and always asks first — one stray tap must never lose a name. */}
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={format(removeA11y, { name: player.name })}
-                onPress={() => onRemove(player)}
-                hitSlop={6}
-                style={styles.remove}
+        <View>
+          {header}
+          <View style={styles.teamCountRow} accessibilityRole="radiogroup">
+            <Text style={styles.teamCountLabel}>{copy.teamCount}</Text>
+            <View style={styles.teamCountOptions}>
+              {teamCounts.map((count) => {
+                const selected = count === teamCount;
+                return (
+                  <Pressable
+                    key={count}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected, checked: selected }}
+                    accessibilityLabel={format(copy.teamCountA11y, { count })}
+                    onPress={() => {
+                      if (selected) return;
+                      feedback.tap();
+                      onTeamCount(count);
+                      onInteract?.();
+                    }}
+                    style={[styles.countChip, selected && styles.countChipSelected]}
+                  >
+                    <Text style={[styles.countChipLabel, selected && styles.countChipLabelSelected]}>
+                      {count}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+        </View>
+
+        {/* The sticky header takes over its child's style, so the row lives one level down. */}
+        {children ? <View style={styles.inputBar}>{children}</View> : null}
+
+        <View style={styles.list}>
+          {players.map((player) => {
+            const assigned = assignments[player.id];
+            const current = assigned !== undefined && assigned < teamCount ? assigned : null;
+            return (
+              <Animated.View
+                key={player.id}
+                entering={FadeIn.duration(200)}
+                layout={LinearTransition.duration(200)}
+                style={styles.playerRow}
               >
-                <Text style={styles.removeLabel}>✕</Text>
-              </Pressable>
-              <Text
-                style={[styles.playerName, current === null && styles.playerNameOut]}
-                numberOfLines={1}
-              >
-                {player.name}
-              </Text>
-              <View style={styles.teamChips}>
-                {Array.from({ length: teamCount }, (_, teamIndex) => {
-                  const selected = current === teamIndex;
-                  const palette = teamColor(teamIndex);
-                  return (
-                    <Pressable
-                      key={teamIndex}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected }}
-                      accessibilityLabel={
-                        selected
-                          ? format(copy.sitOutA11y, {
-                              name: subjectName(settings.language, player.name),
-                            })
-                          : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
-                      }
-                      onPress={() => {
-                        feedback.tap();
-                        // Tapping the team you are already on takes you out of the game.
-                        onAssign(player.id, selected ? null : teamIndex);
-                        onInteract?.();
-                      }}
-                      hitSlop={4}
-                      style={[
-                        styles.teamChip,
-                        selected && { backgroundColor: palette.bg, borderColor: palette.bg },
-                      ]}
-                    >
-                      <Text style={[styles.teamChipLabel, selected && { color: palette.fg }]}>
-                        {teamIndex + 1}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </Animated.View>
-          );
-        })}
+                {/* Removal sits on the far side from the chips, which shift as the team count
+                    changes, and always asks first — one stray tap must never lose a name. */}
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={format(removeA11y, { name: player.name })}
+                  onPress={() => onRemove(player)}
+                  hitSlop={6}
+                  style={styles.remove}
+                >
+                  <Text style={styles.removeLabel}>✕</Text>
+                </Pressable>
+                <Text
+                  style={[styles.playerName, current === null && styles.playerNameOut]}
+                  numberOfLines={1}
+                >
+                  {player.name}
+                </Text>
+                <View style={styles.teamChips}>
+                  {Array.from({ length: teamCount }, (_, teamIndex) => {
+                    const selected = current === teamIndex;
+                    const palette = teamColor(teamIndex);
+                    return (
+                      <Pressable
+                        key={teamIndex}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected }}
+                        accessibilityLabel={
+                          selected
+                            ? format(copy.sitOutA11y, {
+                                name: subjectName(settings.language, player.name),
+                              })
+                            : format(copy.teamChipA11y, { name: player.name, number: teamIndex + 1 })
+                        }
+                        onPress={() => {
+                          feedback.tap();
+                          // Tapping the team you are already on takes you out of the game.
+                          onAssign(player.id, selected ? null : teamIndex);
+                          onInteract?.();
+                        }}
+                        hitSlop={4}
+                        style={[
+                          styles.teamChip,
+                          selected && { backgroundColor: palette.bg, borderColor: palette.bg },
+                        ]}
+                      >
+                        <Text style={[styles.teamChipLabel, selected && { color: palette.fg }]}>
+                          {teamIndex + 1}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </Animated.View>
+            );
+          })}
+        </View>
       </ScrollView>
 
       <View style={styles.summary}>
@@ -258,6 +270,10 @@ const styles = StyleSheet.create({
   countChipLabelSelected: {
     color: colors.onPrimary,
   },
+  inputBar: {
+    // Opaque, so rows scroll under the name row while it is pinned.
+    backgroundColor: colors.bg,
+  },
   list: {
     paddingVertical: spacing(1.5),
     gap: spacing(1),
@@ -321,6 +337,8 @@ const styles = StyleSheet.create({
   summary: {
     flexDirection: 'row',
     gap: spacing(0.75),
+    // A clear gap under the scroll edge, so a row cut by scrolling never reads as covered.
+    marginTop: spacing(1),
     marginBottom: spacing(1.5),
   },
   summaryCard: {

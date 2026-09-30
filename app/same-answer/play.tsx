@@ -86,13 +86,30 @@ export default function SameAnswerPlayScreen() {
           <Text style={styles.teamMembers}>{members.map((player) => player.name).join(' · ')}</Text>
           <Text style={styles.teamUp}>{copy.teamUp}</Text>
 
-          <View style={styles.scoreboard}>
+          <View style={styles.scoreboard} accessibilityLabel={copy.scoreboard}>
             {state.teams.map((other) => {
               const otherPalette = teamColor(other.number - 1);
+              const otherName = format(copy.team, { number: other.number });
+              const score = state.scores[other.id];
+              // Name and score sit on separate lines: side by side, "1" and "0" read as "10".
               return (
-                <View key={other.id} style={[styles.scoreChip, { borderColor: otherPalette.bg }]}>
-                  <Text style={[styles.scoreChipTeam, { color: otherPalette.bg }]}>{other.number}</Text>
-                  <Text style={styles.scoreChipScore}>{state.scores[other.id]}</Text>
+                <View
+                  key={other.id}
+                  accessible
+                  accessibilityLabel={format(copy.scoreChipA11y, { team: otherName, score })}
+                  style={[styles.scoreChip, { borderColor: otherPalette.bg }]}
+                >
+                  <Text
+                    style={[styles.scoreChipTeam, { color: otherPalette.bg }]}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.8}
+                  >
+                    {otherName}
+                  </Text>
+                  <Text style={styles.scoreChipScore} numberOfLines={1}>
+                    {score}
+                  </Text>
                 </View>
               );
             })}
@@ -252,17 +269,18 @@ const styles = StyleSheet.create({
   },
   scoreboard: {
     flexDirection: 'row',
-    gap: spacing(1),
+    alignSelf: 'stretch',
+    gap: spacing(0.75),
     marginTop: spacing(1),
   },
   scoreChip: {
-    flexDirection: 'row',
+    // Same card as the setup summary, so four teams share 272dp at the narrowest phones.
+    flex: 1,
     alignItems: 'center',
-    gap: spacing(0.75),
     borderWidth: 1,
-    borderRadius: radius.pill,
-    paddingVertical: spacing(0.75),
-    paddingHorizontal: spacing(1.5),
+    borderRadius: radius.sm,
+    paddingVertical: spacing(1),
+    paddingHorizontal: spacing(0.5),
   },
   scoreChipTeam: {
     fontFamily: font.family,
@@ -272,8 +290,8 @@ const styles = StyleSheet.create({
   scoreChipScore: {
     color: colors.text,
     fontFamily: font.family,
-    fontSize: font.label,
-    fontWeight: '700',
+    fontSize: font.verdict,
+    fontWeight: '900',
   },
   readyButton: {
     marginTop: spacing(3),

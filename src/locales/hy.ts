@@ -92,6 +92,7 @@ export const hy: Strings = {
     scoreTotal: '{team}՝ արդեն {score} միավոր',
     next: 'ՀԱՋՈՐԴԸ',
     scoreboard: 'Հաշիվ',
+    scoreChipA11y: '{team}՝ {score} միավոր',
   },
   actIt: {
     setupTitle: 'Կազմեք թիմերը',

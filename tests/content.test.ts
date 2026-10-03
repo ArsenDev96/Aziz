@@ -6,7 +6,7 @@ import { wrongAnswerHy } from '../src/content/wrong-answer/hy';
 
 const DECK_SIZE = 200;
 
-/** A question has to be readable inside the shortest (2.5 second) clock. */
+/** A question has to be readable inside the shortest (3 second) clock. */
 const MAX_TEXT_LENGTH = 60;
 
 const CATEGORIES = new Set(['general', 'armenia', 'food', 'yerevan', 'funny', 'hard']);

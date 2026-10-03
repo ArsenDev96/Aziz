@@ -3,7 +3,7 @@ import type { Question } from './types';
 /**
  * Wrong Answer Only deck — 200 questions.
  * Rules for every question: instantly understood, one obvious answer,
- * short enough to read out loud inside a 2.5 second clock, no special knowledge.
+ * short enough to read out loud inside a 3 second clock, no special knowledge.
  * Ids are shared with `hy.ts`; add a question to both files or to neither. The two decks are
  * not translations: Armenian is Armenia-first, English must be obvious to anyone with no
  * Armenian background, so the same id can carry a completely different question.

@@ -5,7 +5,7 @@
 import { msToSeconds, secondsToMs } from '@/lib/time';
 
 /** The clocks a group can pick from before a game, in seconds. */
-export const TIMER_OPTIONS = [2.5, 3, 3.5] as const;
+export const TIMER_OPTIONS = [3, 3.5, 4] as const;
 
 export type TimerSeconds = (typeof TIMER_OPTIONS)[number];
 
@@ -29,7 +29,7 @@ export const isTimerSeconds = (value: unknown): value is TimerSeconds =>
 
 /**
  * Turns whatever storage handed back into a timer the rules allow. Values from a previous
- * option set (4, 5) fall back to the default rather than being remapped.
+ * option set (2.5, 5) fall back to the default rather than being remapped.
  */
 export const normalizeTimerSeconds = (value: unknown): TimerSeconds =>
   isTimerSeconds(value) ? value : WRONG_ANSWER_RULES.defaultTimerSeconds;

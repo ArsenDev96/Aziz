@@ -13,7 +13,7 @@ interface Props {
 }
 
 /**
- * "Timer  2.5 sec  3 sec  3.5 sec" picker for the normal-question clock. One line when it fits;
+ * "Timer  3 sec  3.5 sec  4 sec" picker for the normal-question clock. One line when it fits;
  * on narrow phones the chips wrap under the label, so the label is never cut short.
  */
 export const TimerPicker = ({ value, onChange, style }: Props) => {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   chip: {
     paddingVertical: spacing(1),
-    // Narrow enough that "2.5 վրկ · 3 վրկ · 3.5 վրկ" stays on one row at 360dp.
+    // Narrow enough that "3 վրկ · 3.5 վրկ · 4 վրկ" stays on one row at 360dp.
     paddingHorizontal: spacing(1.25),
     borderRadius: radius.pill,
     borderWidth: 1,

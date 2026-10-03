@@ -49,8 +49,8 @@ const playToSuddenDeath = (timerSeconds: TimerSeconds): GameState => {
 };
 
 describe('timer options', () => {
-  it('offers exactly 2.5, 3 and 3.5 seconds', () => {
-    assert.deepEqual([...TIMER_OPTIONS], [2.5, 3, 3.5]);
+  it('offers exactly 3, 3.5 and 4 seconds', () => {
+    assert.deepEqual([...TIMER_OPTIONS], [3, 3.5, 4]);
   });
 
   it('defaults to 3 seconds', () => {
@@ -62,16 +62,17 @@ describe('timer options', () => {
   it('accepts only the listed options', () => {
     for (const option of TIMER_OPTIONS) assert.ok(isTimerSeconds(option));
     assert.equal(isTimerSeconds(2), false);
-    assert.equal(isTimerSeconds(4), false);
+    assert.equal(isTimerSeconds(2.5), false);
+    assert.equal(isTimerSeconds(4.5), false);
     assert.equal(isTimerSeconds(5), false);
     assert.equal(isTimerSeconds('3'), false);
     assert.equal(isTimerSeconds(undefined), false);
   });
 
   it('keeps a valid pick and falls back to 3 for anything else', () => {
-    assert.equal(normalizeTimerSeconds(2.5), 2.5);
     assert.equal(normalizeTimerSeconds(3), 3);
     assert.equal(normalizeTimerSeconds(3.5), 3.5);
+    assert.equal(normalizeTimerSeconds(4), 4);
     assert.equal(normalizeTimerSeconds(undefined), 3);
     assert.equal(normalizeTimerSeconds(null), 3);
     assert.equal(normalizeTimerSeconds(9), 3);
@@ -79,23 +80,23 @@ describe('timer options', () => {
     assert.equal(normalizeTimerSeconds(Number.NaN), 3);
   });
 
-  it('sends the retired 4 and 5 second picks to the default', () => {
-    assert.equal(normalizeTimerSeconds(4), 3);
+  it('sends the retired 2.5 and 5 second picks to the default', () => {
+    assert.equal(normalizeTimerSeconds(2.5), 3);
     assert.equal(normalizeTimerSeconds(5), 3);
   });
 });
 
 describe('sudden-death timer', () => {
   it('is half a second shorter than the selected timer', () => {
-    assert.equal(suddenDeathTimerSeconds(2.5), 2);
     assert.equal(suddenDeathTimerSeconds(3), 2.5);
     assert.equal(suddenDeathTimerSeconds(3.5), 3);
+    assert.equal(suddenDeathTimerSeconds(4), 3.5);
   });
 
   it('is computed in whole milliseconds', () => {
-    assert.equal(suddenDeathTimerMs(2.5), 2000);
     assert.equal(suddenDeathTimerMs(3), 2500);
     assert.equal(suddenDeathTimerMs(3.5), 3000);
+    assert.equal(suddenDeathTimerMs(4), 3500);
     for (const option of TIMER_OPTIONS) assert.ok(Number.isInteger(suddenDeathTimerMs(option)));
   });
 
@@ -127,7 +128,7 @@ describe('the engine and the selected timer', () => {
     assert.equal(currentTimerMs(state), 3000);
   });
 
-  const expectedMs: Record<TimerSeconds, number> = { 2.5: 2500, 3: 3000, 3.5: 3500 };
+  const expectedMs: Record<TimerSeconds, number> = { 3: 3000, 3.5: 3500, 4: 4000 };
 
   for (const option of TIMER_OPTIONS) {
     it(`runs every normal question on a ${option} second clock`, () => {
@@ -156,7 +157,7 @@ describe('the engine and the selected timer', () => {
   }
 
   it('sanitises an out-of-rules timer instead of running the game on it', () => {
-    const state = createGame(players, questionIds, createSeededRng(1), 4 as TimerSeconds);
+    const state = createGame(players, questionIds, createSeededRng(1), 2.5 as TimerSeconds);
     assert.equal(state.timerSeconds, 3);
   });
 });
@@ -186,8 +187,8 @@ describe('settings persistence', () => {
   const stored = (timerSeconds: unknown) =>
     ({ timerSeconds }) as unknown as Partial<typeof DEFAULT_SETTINGS>;
 
-  it('normalises the retired 4 and 5 second picks to 3', () => {
-    assert.equal(hydrateSettings(stored(4)).timerSeconds, 3);
+  it('normalises the retired 2.5 and 5 second picks to 3', () => {
+    assert.equal(hydrateSettings(stored(2.5)).timerSeconds, 3);
     assert.equal(hydrateSettings(stored(5)).timerSeconds, 3);
   });
 

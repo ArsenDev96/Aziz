@@ -3,7 +3,7 @@ import type { Question } from './types';
 /**
  * Wrong Answer Only deck — 200 questions, paired 1:1 with the English ids.
  * Wording is deliberately spoken Eastern Armenian, the way it would be read out at a table:
- * short, one obvious answer, readable on a phone inside a 2.5 second clock.
+ * short, one obvious answer, readable on a phone inside a 3 second clock.
  */
 export const wrongAnswerHy: Question[] = [
   { id: 'wa-001', category: 'general', text: 'Ի՞նչ գույնի է ձյունը։' },

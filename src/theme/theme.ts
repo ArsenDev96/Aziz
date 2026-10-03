@@ -16,6 +16,8 @@ export const colors = {
   fail: '#FF5252',
   onPrimary: '#FFFFFF',
   onAccent: '#1A1206',
+  /** Dims the screen behind a dialog. */
+  scrim: 'rgba(5, 3, 12, 0.75)',
 } as const;
 
 /** One color per team slot for the team modes, with a readable foreground for each. */
@@ -59,6 +61,9 @@ export const font = {
  */
 export const logo = {
   homeWidth: 192,
+  /** Home on a short window (below `compactBelowHeight` dp), so the three cards and Settings fit. */
+  homeWidthCompact: 132,
+  compactBelowHeight: 720,
   artwork: { left: 0.161, top: 0.297, width: 0.679, height: 0.456 },
 } as const;
 

@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,6 +12,7 @@ import {
 } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { AzizButton } from '@/components/AzizButton';
+import { useConfirm } from '@/components/ConfirmDialog';
 import { Screen } from '@/components/Screen';
 import { useFeedback } from '@/lib/feedback';
 import { useScrollToNew } from '@/lib/scroll-to-new';
@@ -51,6 +51,7 @@ const errorMessage = (error: SetupError, strings: Strings['sameAnswer']): string
 
 export default function SameAnswerSetupScreen() {
   const { strings, settings } = useSettings();
+  const confirm = useConfirm();
   const feedback = useFeedback();
   // The roster (and its persistence) is shared with Wrong Answer Only.
   const { addPlayer, removePlayer } = useGame();
@@ -78,17 +79,16 @@ export default function SameAnswerSetupScreen() {
   };
 
   const confirmRemove = (player: Player) =>
-    Alert.alert(format(strings.players.removeTitle, { name: player.name }), strings.players.removeBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.players.removeConfirm,
-        style: 'destructive',
-        onPress: () => {
-          removePlayer(player.id);
-          setError(null);
-        },
+    confirm({
+      title: format(strings.players.removeTitle, { name: player.name }),
+      body: strings.players.removeBody,
+      confirmLabel: strings.players.removeConfirm,
+      cancelLabel: strings.common.cancel,
+      onConfirm: () => {
+        removePlayer(player.id);
+        setError(null);
       },
-    ]);
+    });
 
   const start = () => {
     if (!canStart) {

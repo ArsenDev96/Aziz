@@ -1,6 +1,7 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
-import { Alert, BackHandler } from 'react-native';
+import { BackHandler } from 'react-native';
+import { useConfirm } from '@/components/ConfirmDialog';
 import { useStrings } from '@/state/settings';
 
 /**
@@ -11,25 +12,25 @@ import { useStrings } from '@/state/settings';
  *
  * The listener is only registered while this screen is focused; React Native calls the most
  * recently added handler first, so returning `true` here stops the navigator's own Back.
- * While the native dialog is open, Android delivers Back to the dialog, not to the app, so a
- * second press can never open a second dialog.
+ * While the dialog is open, Android delivers Back to its Modal (which cancels), not to this
+ * listener, so a second press can never open a second dialog.
  */
 export const useQuitConfirm = (quit: () => void, active: boolean): (() => void) => {
   const strings = useStrings();
+  const confirm = useConfirm();
 
   const confirmQuit = useCallback(() => {
-    Alert.alert(strings.common.quitConfirmTitle, strings.common.quitConfirmBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.common.confirm,
-        style: 'destructive',
-        onPress: () => {
-          quit();
-          router.replace('/');
-        },
+    confirm({
+      title: strings.common.quitConfirmTitle,
+      body: strings.common.quitConfirmBody,
+      confirmLabel: strings.common.confirm,
+      cancelLabel: strings.common.cancel,
+      onConfirm: () => {
+        quit();
+        router.replace('/');
       },
-    ]);
-  }, [strings, quit]);
+    });
+  }, [strings, quit, confirm]);
 
   useFocusEffect(
     useCallback(() => {

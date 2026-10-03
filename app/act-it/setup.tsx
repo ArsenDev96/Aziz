@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -10,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { AzizButton } from '@/components/AzizButton';
+import { useConfirm } from '@/components/ConfirmDialog';
 import { Screen } from '@/components/Screen';
 import { TeamSetup } from '@/components/TeamSetup';
 import { format, type Strings } from '@/locales';
@@ -47,6 +47,7 @@ const errorMessage = (error: SetupError, strings: Strings['actIt']): string => {
 
 export default function ActItSetupScreen() {
   const { strings } = useSettings();
+  const confirm = useConfirm();
   // The roster (and its persistence) is shared with the other modes.
   const { addPlayer, removePlayer } = useGame();
   const { players, teamCount, setTeamCount, assignments, assign, setup, setupErrors, canStart } =
@@ -72,17 +73,16 @@ export default function ActItSetupScreen() {
   };
 
   const confirmRemove = (player: Player) =>
-    Alert.alert(format(strings.players.removeTitle, { name: player.name }), strings.players.removeBody, [
-      { text: strings.common.cancel, style: 'cancel' },
-      {
-        text: strings.players.removeConfirm,
-        style: 'destructive',
-        onPress: () => {
-          removePlayer(player.id);
-          setError(null);
-        },
+    confirm({
+      title: format(strings.players.removeTitle, { name: player.name }),
+      body: strings.players.removeBody,
+      confirmLabel: strings.players.removeConfirm,
+      cancelLabel: strings.common.cancel,
+      onConfirm: () => {
+        removePlayer(player.id);
+        setError(null);
       },
-    ]);
+    });
 
   const start = () => {
     if (!canStart) {

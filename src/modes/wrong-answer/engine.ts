@@ -124,7 +124,16 @@ export const currentTimerSeconds = (state: GameState): number =>
 export const currentTimerMs = (state: GameState): number =>
   timerMsForRound(currentTurn(state)?.suddenDeathRound ?? 0, state.timerSeconds);
 
-export const startQuestion = (state: GameState): GameState =>
+/**
+ * The running scores sit on the turn screen once anyone has played. Hidden on the first turn
+ * (everyone is on 0) and in sudden death, where everyone still playing is level.
+ */
+export const showsScoreboard = (state: GameState): boolean =>
+  state.phase === 'turn' &&
+  state.turnIndex > 0 &&
+  (currentTurn(state)?.suddenDeathRound ?? 0) === 0;
+
+export const startQuestion =(state: GameState): GameState =>
   state.phase === 'turn' ? { ...state, phase: 'question' } : state;
 
 export const timeUp = (state: GameState): GameState =>

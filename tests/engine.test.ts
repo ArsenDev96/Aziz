@@ -7,6 +7,7 @@ import {
   currentTimerSeconds,
   currentTurn,
   judgeTurn,
+  showsScoreboard,
   standings,
   startQuestion,
   timeUp,
@@ -158,6 +159,7 @@ describe('finishing the game', () => {
       tied,
     );
     assert.equal(currentTimerSeconds(state), suddenDeathTimerSeconds(state.timerSeconds));
+    assert.equal(showsScoreboard(state), false);
   });
 
   it('crowns the one player who passes sudden death', () => {
@@ -217,5 +219,26 @@ describe('phases', () => {
     const judging = timeUp(asking);
     assert.equal(judging.phase, 'judge');
     assert.equal(judgeTurn(judging, 'pass').phase, 'turn');
+  });
+});
+
+describe('scoreboard between turns', () => {
+  it('stays hidden before anyone has played', () => {
+    assert.equal(showsScoreboard(newGame()), false);
+  });
+
+  it('shows on the turn screen once a turn has been judged', () => {
+    const state = playTurn(newGame(), 'fail');
+    assert.equal(showsScoreboard(state), true);
+    assert.equal(showsScoreboard(startQuestion(state)), false);
+    assert.equal(showsScoreboard(timeUp(startQuestion(state))), false);
+  });
+
+  it('lists the leader first after a PASS', () => {
+    const first = newGame();
+    const scorer = currentTurn(first)!.playerId;
+    const table = standings(playTurn(first, 'pass'));
+    assert.equal(table[0].player.id, scorer);
+    assert.equal(table[0].score, WRONG_ANSWER_RULES.passPoints);
   });
 });

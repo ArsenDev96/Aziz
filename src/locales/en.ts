@@ -134,6 +134,8 @@ export const en = {
     heading: '{name}, it\u2019s your turn',
     ready: 'READY',
     questionCount: 'Question {current} of {total}',
+    scoreboard: 'Scores',
+    scoreChipA11y: '{name}: {score} pts',
   },
   question: {
     hint: 'Answer it WRONG',

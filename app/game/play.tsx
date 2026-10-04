@@ -12,11 +12,13 @@ import {
   currentPlayer,
   currentTimerMs,
   currentTurn,
+  showsScoreboard,
+  standings,
   turnProgress,
 } from '@/modes/wrong-answer/engine';
 import { useGame } from '@/state/game';
 import { useSettings } from '@/state/settings';
-import { colors, font, spacing } from '@/theme/theme';
+import { colors, font, radius, spacing } from '@/theme/theme';
 
 export default function PlayScreen() {
   const { strings, settings } = useSettings();
@@ -65,6 +67,34 @@ export default function PlayScreen() {
           {isSuddenDeath ? <Text style={styles.suddenDeath}>{strings.suddenDeath.subtitle}</Text> : null}
           <Text style={styles.playerName}>{player.name}</Text>
           <Text style={styles.turnHeading}>{format(strings.turn.heading, { name: player.name })}</Text>
+
+          {showsScoreboard(state) ? (
+            <View style={styles.scoreboard} accessibilityLabel={strings.turn.scoreboard}>
+              {standings(state).map(({ player: other, score, rank }) => {
+                // Nobody leads a table of zeros.
+                const leads = rank === 1 && score > 0;
+                return (
+                  <View
+                    key={other.id}
+                    accessible
+                    accessibilityLabel={format(strings.turn.scoreChipA11y, {
+                      name: other.name,
+                      score,
+                    })}
+                    style={[styles.scoreChip, leads && styles.scoreChipLeader]}
+                  >
+                    <Text style={styles.scoreChipName} numberOfLines={1}>
+                      {other.name}
+                    </Text>
+                    <Text style={[styles.scoreChipScore, leads && styles.scoreChipScoreLeader]}>
+                      {score}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          ) : null}
+
           <AzizButton label={strings.turn.ready} onPress={beginQuestion} style={styles.readyButton} />
         </Animated.View>
       ) : null}
@@ -159,6 +189,46 @@ const styles = StyleSheet.create({
     fontFamily: font.family,
     fontSize: font.body,
     textAlign: 'center',
+  },
+  scoreboard: {
+    // Up to 8 players: one-line chips wrap into centred rows instead of one tall list.
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    gap: spacing(0.75),
+    marginTop: spacing(1),
+  },
+  scoreChip: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: spacing(0.75),
+    maxWidth: spacing(18),
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.pill,
+    backgroundColor: colors.surface,
+    paddingVertical: spacing(0.5),
+    paddingHorizontal: spacing(1.5),
+  },
+  scoreChipLeader: {
+    borderColor: colors.accent,
+  },
+  scoreChipName: {
+    flexShrink: 1,
+    color: colors.textMuted,
+    fontFamily: font.family,
+    fontSize: font.label,
+    fontWeight: '700',
+  },
+  scoreChipScore: {
+    color: colors.text,
+    fontFamily: font.family,
+    fontSize: font.body,
+    fontWeight: '900',
+  },
+  scoreChipScoreLeader: {
+    color: colors.accent,
   },
   readyButton: {
     marginTop: spacing(3),

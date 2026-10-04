@@ -20,6 +20,8 @@ nowhere else.
    gets exactly 5 questions and nobody can be skipped.
 2. Questions are dealt from a **shuffled deck with no repeats** inside a session.
 3. Each turn: `READY` → question + the chosen countdown → the group taps `PASS` or `FAIL`.
+   From the second turn on, the turn screen shows everyone's running score, leader first and
+   highlighted. It is hidden in sudden death.
 4. Highest score wins. If several players are level at the top, sudden death decides it.
 
 ## Sudden death

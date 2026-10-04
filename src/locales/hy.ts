@@ -139,6 +139,8 @@ export const hy: Strings = {
     heading: '{name}, քո հերթն է',
     ready: 'ՊԱՏՐԱ՛ՍՏ ԵՄ',
     questionCount: 'Հարց {current} / {total}',
+    scoreboard: 'Հաշիվ',
+    scoreChipA11y: '{name}՝ {score} միավոր',
   },
   question: {
     hint: 'Պատասխանիր ՍԽԱԼ',

@@ -14,7 +14,7 @@
     },
     "android": {
       "package": "am.aziz.party",
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/branding/adaptive-foreground.png",
         "backgroundColor": "#0E0B1A",

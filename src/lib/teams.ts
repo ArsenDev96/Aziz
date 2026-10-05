@@ -73,3 +73,35 @@ export const buildTeamSetup = (
   }
   return { selectedPlayerIds: teams.flat(), teams };
 };
+
+/** The team split saved between games, so a group picks teams once per evening, not once per mode. */
+export interface SavedTeams {
+  teamCount: number;
+  assignments: TeamAssignments;
+}
+
+/**
+ * Reads a saved team split from storage. Anything malformed falls back to `fallbackCount`
+ * and no assignments; a single bad entry is dropped without losing the rest.
+ */
+export const hydrateSavedTeams = (stored: unknown, fallbackCount: number): SavedTeams => {
+  if (typeof stored !== 'object' || stored === null) {
+    return { teamCount: fallbackCount, assignments: {} };
+  }
+  const { teamCount, assignments } = stored as Partial<Record<keyof SavedTeams, unknown>>;
+  const clean: TeamAssignments = {};
+  if (typeof assignments === 'object' && assignments !== null) {
+    for (const [playerId, teamIndex] of Object.entries(assignments)) {
+      if (Number.isInteger(teamIndex) && (teamIndex as number) >= 0) {
+        clean[playerId] = teamIndex as number;
+      }
+    }
+  }
+  return {
+    teamCount:
+      Number.isInteger(teamCount) && (teamCount as number) > 0
+        ? (teamCount as number)
+        : fallbackCount,
+    assignments: clean,
+  };
+};

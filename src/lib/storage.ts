@@ -21,4 +21,5 @@ export const saveJson = async (key: string, value: unknown): Promise<void> => {
 export const STORAGE_KEYS = {
   settings: 'aziz.settings.v1',
   players: 'aziz.players.v1',
+  teams: 'aziz.teams.v1',
 } as const;

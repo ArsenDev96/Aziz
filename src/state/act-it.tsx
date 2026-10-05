@@ -30,6 +30,7 @@ import {
 import { ACT_IT_RULES } from '@/modes/act-it/rules';
 import { useGame } from '@/state/game';
 import { useSettings } from '@/state/settings';
+import { useTeams } from '@/state/teams';
 
 interface ActItValue {
   /** The shared AZIZ roster — the same names the other modes use. */
@@ -69,20 +70,16 @@ const clampTeamCount = (count: number) =>
 export const ActItProvider = ({ children }: { children: ReactNode }) => {
   const { settings } = useSettings();
   const { players } = useGame();
-  const [teamCount, setTeamCountRaw] = useState<number>(ACT_IT_RULES.minTeams);
-  const [assignments, setAssignments] = useState<TeamAssignments>({});
+  // Shared with the other team modes, so the group keeps its teams when switching games.
+  const { teamCount: savedTeamCount, setTeamCount: saveTeamCount, assignments, assign } =
+    useTeams();
+  const teamCount = clampTeamCount(savedTeamCount);
   const [state, setState] = useState<ActItState | null>(null);
 
-  const setTeamCount = useCallback((count: number) => setTeamCountRaw(clampTeamCount(count)), []);
-
-  const assign = useCallback((playerId: string, teamIndex: number | null) => {
-    setAssignments((current) => {
-      const updated = { ...current };
-      if (teamIndex === null) delete updated[playerId];
-      else updated[playerId] = teamIndex;
-      return updated;
-    });
-  }, []);
+  const setTeamCount = useCallback(
+    (count: number) => saveTeamCount(clampTeamCount(count)),
+    [saveTeamCount],
+  );
 
   // Derived rather than stored: a player removed from the roster, or a team that no
   // longer exists after the count went down, simply drops out of the setup.

@@ -7,6 +7,7 @@ import { ActItProvider } from '@/state/act-it';
 import { GameProvider } from '@/state/game';
 import { SameAnswerProvider } from '@/state/same-answer';
 import { SettingsProvider } from '@/state/settings';
+import { TeamsProvider } from '@/state/teams';
 import { colors } from '@/theme/theme';
 
 /** Any screen that throws while rendering shows the AZIZ error screen instead of a dead app. */
@@ -19,20 +20,22 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <SettingsProvider>
         <GameProvider>
-          <SameAnswerProvider>
-            <ActItProvider>
-              <ConfirmProvider>
-                <StatusBar style="light" />
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                    contentStyle: { backgroundColor: colors.bg },
-                    animation: 'fade',
-                  }}
-                />
-              </ConfirmProvider>
-            </ActItProvider>
-          </SameAnswerProvider>
+          <TeamsProvider>
+            <SameAnswerProvider>
+              <ActItProvider>
+                <ConfirmProvider>
+                  <StatusBar style="light" />
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                      contentStyle: { backgroundColor: colors.bg },
+                      animation: 'fade',
+                    }}
+                  />
+                </ConfirmProvider>
+              </ActItProvider>
+            </SameAnswerProvider>
+          </TeamsProvider>
         </GameProvider>
       </SettingsProvider>
     </SafeAreaProvider>

@@ -22,12 +22,14 @@ import {
   type SetupError,
   type TeamSetup,
 } from '@/modes/same-answer/engine';
+import type { TeamAssignments } from '@/lib/teams';
 import { SAME_ANSWER_RULES } from '@/modes/same-answer/rules';
 import { useGame } from '@/state/game';
 import { useSettings } from '@/state/settings';
+import { useTeams } from '@/state/teams';
 
 /** Player id → 0-based team index. Players missing from the map sit this game out. */
-type Assignments = Record<string, number>;
+type Assignments = TeamAssignments;
 
 interface SameAnswerValue {
   /** The shared AZIZ roster — the same names Wrong Answer Only uses. */
@@ -63,20 +65,16 @@ const clampTeamCount = (count: number) =>
 export const SameAnswerProvider = ({ children }: { children: ReactNode }) => {
   const { settings } = useSettings();
   const { players } = useGame();
-  const [teamCount, setTeamCountRaw] = useState<number>(SAME_ANSWER_RULES.minTeams);
-  const [assignments, setAssignments] = useState<Assignments>({});
+  // Shared with the other team modes, so the group keeps its teams when switching games.
+  const { teamCount: savedTeamCount, setTeamCount: saveTeamCount, assignments, assign } =
+    useTeams();
+  const teamCount = clampTeamCount(savedTeamCount);
   const [state, setState] = useState<SameAnswerState | null>(null);
 
-  const setTeamCount = useCallback((count: number) => setTeamCountRaw(clampTeamCount(count)), []);
-
-  const assign = useCallback((playerId: string, teamIndex: number | null) => {
-    setAssignments((current) => {
-      const updated = { ...current };
-      if (teamIndex === null) delete updated[playerId];
-      else updated[playerId] = teamIndex;
-      return updated;
-    });
-  }, []);
+  const setTeamCount = useCallback(
+    (count: number) => saveTeamCount(clampTeamCount(count)),
+    [saveTeamCount],
+  );
 
   // Derived rather than stored: a player removed from the roster, or a team that no
   // longer exists after the count went down, simply drops out of the setup.
